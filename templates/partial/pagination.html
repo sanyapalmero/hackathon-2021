@@ -1,0 +1,51 @@
+{% load urls_extras %}
+
+<ul class="pagination justify-content-center">
+    {% if page_obj.number > 1 %}
+        <li class="page-item">
+            <a class="page-link" href="{% set_url_param request.get_full_path 'page' 1 %}">&lt;&lt; Первая</a>
+        </li>
+    {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#">&lt;&lt; Первая</a>
+        </li>
+    {% endif %}
+
+    {% if page_obj.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="{% set_url_param request.get_full_path 'page' page_obj.previous_page_number %}">&lt; Пред.</a>
+        </li>
+    {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#">&lt; Пред.</a>
+        </li>
+    {% endif %}
+
+    {% for i in page_obj.paginator.page_range %}
+        {% if page_obj.number == i %}
+            <li class="page-item active"><a class="page-link" href="{% set_url_param request.get_full_path 'page' i %}">{{ i }}</a></li>
+        {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %}
+            <li class="page-item"><a class="page-link" href="{% set_url_param request.get_full_path 'page' i %}">{{ i }}</a></li>
+        {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="{% set_url_param request.get_full_path 'page' page_obj.next_page_number %}">След. &gt;</a>
+        </li>
+    {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#">След. &gt;</a>
+        </li>
+    {% endif %}
+
+    {% if page_obj.number < page_obj.paginator.num_pages %}
+        <li class="page-item">
+            <a class="page-link" href="{% set_url_param request.get_full_path 'page' page_obj.paginator.num_pages %}">Посл. &gt;&gt;</a>
+        </li>
+    {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#">Посл. &gt;&gt;</a>
+        </li>
+    {% endif %}
+</ul>

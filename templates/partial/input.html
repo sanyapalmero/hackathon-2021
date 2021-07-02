@@ -1,0 +1,28 @@
+{% load l10n %}
+
+<div class="form-group {% if field_name.errors %}has-danger{% endif %}">
+    {{ field_name.label_tag }}
+    <input
+        type="{{ type|default:'text' }}"
+        class="form-control {% if field_name.errors %}is-invalid{% endif %}"
+        name="{{ field_name.html_name }}"
+        id="{{ field_name.id_for_label }}"
+        {% if field_name.value %}
+            value="{{ field_name.value|unlocalize }}"
+        {% endif %}
+        {% if field_name.field.max_length %}
+            maxlength="{{ field_name.field.max_length }}"
+        {% endif %}
+        {% if field_name.field.required %}
+            required
+        {% endif %}
+    >
+    {% if field_name.field.help_text %}
+        <small class="form-text text-muted">
+            {{ field_name.field.help_text }}
+        </small>
+    {% endif %}
+    {% for error in field_name.errors %}
+        <div class="invalid-feedback">{{ error }}</div>
+    {% endfor %}
+</div>

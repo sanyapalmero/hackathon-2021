@@ -1,0 +1,23 @@
+<div class="form-group {% if field_name.errors %}has-danger{% endif %}">
+    {{ field_name.label_tag }}
+    <select
+        class="form-control {% if field_name.errors %}is-invalid{% endif %}"
+        name="{{ field_name.html_name }}"
+        id="{{ field_name.id_for_label }}"
+        {% if field_name.field.required %}
+            required
+        {% endif %}
+    >
+        {% for value, display in field_name.field.choices %}
+            <option
+                value="{{ value|default_if_none:'' }}"
+                {% if value|stringformat:'s' == field_name.value|stringformat:'s' %}selected{% endif %}
+            >
+                {{ display }}
+            </option>
+        {% endfor %}
+    </select>
+    {% for error in field_name.errors %}
+        <div class="invalid-feedback">{{ error }}</div>
+    {% endfor %}
+</div>

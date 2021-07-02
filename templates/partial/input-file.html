@@ -1,0 +1,21 @@
+{% load l10n %}
+
+<div class="form-group {% if field_name.errors %}has-danger{% endif %}">
+    {{ field_name.label_tag }}
+    <div class="custom-file {% if field_name.errors %}is-invalid{% endif %}">
+        <input
+            type="file"
+            class="custom-file-input"
+            id="{{ field_name.id_for_label }}"
+            name="{{ field_name.html_name }}"
+            lang="ru"
+            {% if field_name.field.required %}
+                required
+            {% endif %}
+        >
+        <label class="custom-file-label" for="customFile">Выберите файл</label>
+    </div>
+    {% for error in field_name.errors %}
+        <div class="invalid-feedback">{{ error }}</div>
+    {% endfor %}
+</div>
