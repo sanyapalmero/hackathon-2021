@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     # External libraries
     'webpack_loader',
     # Local
+    'parsers',
     'users',
     'core.urls',
 ]
