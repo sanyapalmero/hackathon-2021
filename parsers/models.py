@@ -22,13 +22,13 @@ class Offer(models.Model):
         WAITING = 2, 'Ожидает подтверждения'
         PUBLISHED = 3, 'Опубликован'
 
-    resource_code = models.CharField(null=True, blank=False, max_length=255, verbose_name="Код строительного ресурса")
-    name = models.CharField(null=True, blank=False, max_length=255, verbose_name="Наименование")
-    measure_unit = models.CharField(null=True, blank=False, max_length=255, verbose_name="Единица измерения")
-    last_updated = models.DateTimeField(null=True, blank=False, verbose_name="Дата последнего обновления")
-    page_url = models.URLField(null=True, blank=False, verbose_name="Ссылка на страницу")
+    resource_code = models.CharField(null=True, blank=True, max_length=255, verbose_name="Код строительного ресурса")
+    name = models.CharField(max_length=255, verbose_name="Наименование")
+    measure_unit = models.CharField(null=True, blank=True, max_length=255, verbose_name="Единица измерения")
+    last_updated = models.DateTimeField(verbose_name="Дата последнего обновления")
+    page_url = models.URLField(verbose_name="Ссылка на страницу")
     provider = models.ForeignKey(Provider, on_delete=models.CASCADE, verbose_name="Поставщик")
-    image_url = models.URLField(null=True, blank=False, verbose_name="Ссылка на картинку")
+    image_url = models.URLField(null=True, blank=True, verbose_name="Ссылка на картинку")
     status = models.IntegerField(choices=Status.choices, db_index=True, verbose_name="Статус")
 
     @property
@@ -38,7 +38,7 @@ class Offer(models.Model):
 
 class OfferPrice(models.Model):
     """
-    Модель: Цена предложегния в определенный момент времени
+    Модель: Цена предложения в определенный момент времени
     """
 
     class Status(models.IntegerChoices):
@@ -56,5 +56,5 @@ class OfferPrice(models.Model):
     delivery_cost = models.DecimalField(
         max_length=255, decimal_places=2, max_digits=12, verbose_name="Стоимость доставки"
     )
-    extraction_date = models.DateTimeField(null=True, blank=False, verbose_name="Дата извлечения")
+    extraction_date = models.DateTimeField(verbose_name="Дата извлечения")
     status = models.IntegerField(choices=Status.choices, db_index=True, verbose_name="Статус")
