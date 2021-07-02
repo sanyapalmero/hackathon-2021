@@ -1,0 +1,72 @@
+[
+  {
+    "model": "parsers.Offer",
+    "pk": 1,
+    "fields": {
+      "resource_code": null,
+      "name": "Арматура 6 бухта А500 34028-16 в Оренбурге",
+      "measure_unit": "мм",
+      "last_updated": "2021-07-02T17:41:28+00:00",
+      "page_url": "https://orenburg.spk.ru/catalog/metalloprokat/sortovoy-prokat/armatura/6/armatura-6-bukhta-a500-34028-16/",
+      "provider": 1,
+      "image_url": "https://orenburg.spk.ru/upload/product/4b8d01dbe96cbcdafe257752194aa71a.png", 
+      "status": 1
+    }
+  },
+  {
+    "model": "parsers.Offer",
+    "pk": 2,
+    "fields": {
+      "resource_code": null,
+      "name": "СИЛИКАТНЫЙ ПУСТОТЕЛЫЙ УТОЛЩЕННЫЙ(1.35 НФ.) ОБЛИЦОВОЧНЫЙ",
+      "measure_unit": "мм",
+      "last_updated": "2021-06-02T17:41:28+00:00",
+      "page_url": "https://www.a-brick.ru/catalog/brick/061EC1F2",
+      "provider": 1,
+      "image_url": null, 
+      "status": 2
+    }
+  },
+  {
+    "model": "parsers.Offer",
+    "pk": 3,
+    "fields": {
+      "resource_code": null,
+      "name": "Арматура А500С",
+      "measure_unit": "мм",
+      "last_updated": "2021-05-02T17:41:28+00:00",
+      "page_url": "http://www.metallotorg.ru/info/metalloprokat/armatura_stroitelnya/armatura_a500s/",
+      "provider": 1,
+      "image_url": null, 
+      "status": 3
+    }
+  },
+  {
+    "model": "parsers.Offer",
+    "pk": 4,
+    "fields": {
+      "resource_code": null,
+      "name": "Плиты перекрытия",
+      "measure_unit": "м",
+      "last_updated": "2021-04-02T17:41:28+00:00",
+      "page_url": "https://zbk56.ru/produkciya/plity-perekrytij.html",
+      "provider": 1,
+      "image_url": null, 
+      "status": 1
+    }
+  },
+  {
+    "model": "parsers.Offer",
+    "pk": 5,
+    "fields": {
+      "resource_code": null,
+      "name": "Профнастил оцинкованный С8 0.3 1150/1200 в Оренбурге",
+      "measure_unit": "м",
+      "last_updated": "2021-03-02T17:41:28+00:00",
+      "page_url": "https://orenburg.spk.ru/catalog/krovlya/profnastil/s8/0-3/profnastil-ots-s8-0-3-1150-1200/",
+      "provider": 1,
+      "image_url": "https://orenburg.spk.ru/upload/product/5f751ce952581f15880bbf9041d53991.png", 
+      "status": 2
+    }
+  }
+]
