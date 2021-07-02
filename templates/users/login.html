@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Вход на сайт</h1>
+<form action="{% url 'users:login' %}" method="post">
+    {% csrf_token %}
+    {% for error in form.non_field_errors %}
+        <div>{{ error }}</div>
+    {% endfor %}
+        <input 
+            type="email" 
+            name="email" 
+            value="{{ form.email.value|default:'' }}" 
+            placeholder="Email"
+            required
+        >
+        {% for error in form.email.errors %}
+            <div>{{ error }}</div>
+        {% endfor %}
+        <input
+            type="password" 
+            name="password" 
+            value="{{ form.password.value|default:'' }}" 
+            placeholder="Пароль"
+            required
+        >
+        {% for error in form.password.errors %}
+            <div>{{ error }}</div>
+        {% endfor %}
+    <button type="submit">Войти</button>
+</form>
+{% endblock %}
