@@ -8,7 +8,7 @@ class Product(models.Model):
     """
 
     name = models.CharField(max_length=255, verbose_name="Наименование")
-    keywords = ArrayField(models.CharField(max_length=255, null=True, blank=True, verbose_name="Ключевые слова"))
+    keywords = ArrayField(models.CharField(max_length=255, verbose_name="Ключевые слова"), null=True, blank=True)
 
 
 class Provider(models.Model):

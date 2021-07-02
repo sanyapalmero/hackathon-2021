@@ -10,7 +10,8 @@
       "page_url": "https://orenburg.spk.ru/catalog/metalloprokat/sortovoy-prokat/armatura/6/armatura-6-bukhta-a500-34028-16/",
       "provider": 1,
       "image_url": "https://orenburg.spk.ru/upload/product/4b8d01dbe96cbcdafe257752194aa71a.png",
-      "status": 3
+      "status": 3,
+      "product": 1
     }
   },
   {
@@ -72,7 +73,8 @@
       "page_url": "https://www.a-brick.ru/catalog/brick/061EC1F2",
       "provider": 1,
       "image_url": null,
-      "status": 2
+      "status": 2,
+      "product": 1
     }
   },
   {
@@ -98,7 +100,8 @@
       "page_url": "http://www.metallotorg.ru/info/metalloprokat/armatura_stroitelnya/armatura_a500s/",
       "provider": 1,
       "image_url": null,
-      "status": 3
+      "status": 3,
+      "product": 2
     }
   },
   {
@@ -124,7 +127,8 @@
       "page_url": "https://zbk56.ru/produkciya/plity-perekrytij.html",
       "provider": 1,
       "image_url": null,
-      "status": 1
+      "status": 1,
+      "product": 3
     }
   },
   {
@@ -150,7 +154,8 @@
       "page_url": "https://orenburg.spk.ru/catalog/krovlya/profnastil/s8/0-3/profnastil-ots-s8-0-3-1150-1200/",
       "provider": 1,
       "image_url": "https://orenburg.spk.ru/upload/product/5f751ce952581f15880bbf9041d53991.png",
-      "status": 2
+      "status": 2,
+      "product": 4
     }
   }
 ]
