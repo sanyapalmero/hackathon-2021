@@ -18,7 +18,7 @@ class UserManager(BaseUserManager):
     def create_superuser(self, email, password=None, **kwargs):
         user = self.model(
             email=self.normalize_email(email),
-            role=User.ROLE_USER,
+            role=User.ROLE_ADMIN,
             **kwargs,
         )
         user.set_password(password)
@@ -51,6 +51,16 @@ class User(AbstractBaseUser):
     @property
     def is_user(self):
         return self.role == self.ROLE_USER
+
+    @property
+    def is_staff(self):
+        return self.is_admin
+
+    def has_perm(self, *args, **kwargs):
+        return self.is_admin
+
+    def has_module_perms(self, *args, **kwargs):
+        return self.is_admin
 
     def send_email(self, subject, templates_name, context):
         message_txt = render_to_string(
