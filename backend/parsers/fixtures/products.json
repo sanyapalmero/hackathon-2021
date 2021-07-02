@@ -1,0 +1,42 @@
+[
+  {
+    "model": "parsers.Product",
+    "pk": 1,
+    "fields": {
+      "name": "Арматура 6 бухта",
+      "keywords": null
+    }
+  },
+  {
+    "model": "parsers.Product",
+    "pk": 2,
+    "fields": {
+      "name": "Кровля",
+      "keywords": null
+    }
+  },
+  {
+    "model": "parsers.Product",
+    "pk": 3,
+    "fields": {
+      "name": "Плита перекрытия",
+      "keywords": null
+    }
+  },
+  {
+    "model": "parsers.Product",
+    "pk": 4,
+    "fields": {
+      "name": "Профнастил оцинкованный",
+      "keywords": null
+    }
+  },
+  {
+    "model": "parsers.Product",
+    "pk": 5,
+    "fields": {
+      "name": "Кирпич",
+      "keywords": null
+    }
+  }
+]

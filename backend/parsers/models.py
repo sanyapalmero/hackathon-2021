@@ -1,4 +1,14 @@
 from django.db import models
+from django.contrib.postgres.fields import ArrayField
+
+
+class Product(models.Model):
+    """
+    Модель: Товар
+    """
+
+    name = models.CharField(max_length=255, verbose_name="Наименование")
+    keywords = ArrayField(models.CharField(max_length=255, verbose_name="Ключевые слова"), null=True, blank=True)
 
 
 class Provider(models.Model):
@@ -30,6 +40,7 @@ class Offer(models.Model):
     provider = models.ForeignKey(Provider, on_delete=models.CASCADE, verbose_name="Поставщик")
     image_url = models.URLField(null=True, blank=True, verbose_name="Ссылка на картинку")
     status = models.IntegerField(choices=Status.choices, db_index=True, verbose_name="Статус")
+    product = models.ForeignKey(Product, null=True, blank=True, on_delete=models.SET_NULL, verbose_name="Товар")
 
     @property
     def last_offer_price(self):
