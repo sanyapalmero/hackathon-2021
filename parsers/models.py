@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils import timezone
 
 
 class Provider(models.Model):
@@ -48,8 +47,14 @@ class OfferPrice(models.Model):
         PUBLISHED = 3, 'Опубликован'
 
     offer = models.ForeignKey(Offer, on_delete=models.CASCADE, verbose_name="Оффер")
-    price_with_vat = models.CharField(max_length=255, verbose_name="Отпускная цена с НДС")
-    price_without_vat = models.CharField(max_length=255, verbose_name="Стоимость доставки")
-    delivery_cost = models.CharField(max_length=255, verbose_name="Наименование")
+    price_with_vat = models.DecimalField(
+        max_length=255, decimal_places=2, max_digits=12, verbose_name="Отпускная цена с НДС"
+    )
+    price_without_vat = models.DecimalField(
+        max_length=255, decimal_places=2, max_digits=12, verbose_name="Отпускная цена без НДС"
+    )
+    delivery_cost = models.DecimalField(
+        max_length=255, decimal_places=2, max_digits=12, verbose_name="Стоимость доставки"
+    )
     extraction_date = models.DateTimeField(null=True, blank=False, verbose_name="Дата извлечения")
     status = models.IntegerField(choices=Status.choices, db_index=True, verbose_name="Статус")
