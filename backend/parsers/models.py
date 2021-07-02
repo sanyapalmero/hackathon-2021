@@ -33,7 +33,10 @@ class Offer(models.Model):
 
     @property
     def last_offer_price(self):
-        return OfferPrice.objects.filter(offer=self).order_by("extraction_date").last()
+        return OfferPrice.objects\
+            .filter(offer=self, status=OfferPrice.Status.PUBLISHED)\
+            .order_by("extraction_date")\
+            .last()
 
 
 class OfferPrice(models.Model):
