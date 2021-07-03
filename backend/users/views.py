@@ -2,7 +2,6 @@ from django.contrib.auth import login as django_login, \
     logout as django_logout, authenticate
 from django.utils.decorators import method_decorator
 from django.views.decorators.debug import sensitive_post_parameters
-from django.utils.translation import ugettext_lazy as _
 
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -11,7 +10,6 @@ from rest_framework.status import HTTP_401_UNAUTHORIZED
 
 from .serializers import LoginSerializer
 from .utils import ajax_redirect_to_login
-
 
 sensitive_password = method_decorator(sensitive_post_parameters('password'))
 
@@ -40,7 +38,10 @@ class LoginView(GenericAPIView):
             )
 
         django_login(request, user)
-        return Response({'status': 'ok'})
+        return Response({
+            'username': user.username,
+            'id': user.id
+        })
 
 
 class LogoutView(GenericAPIView):

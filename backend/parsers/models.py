@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
 
+from django.utils import timezone
+from datetime import timedelta
+
 
 class Product(models.Model):
     """
@@ -40,7 +43,7 @@ class Offer(models.Model):
     provider = models.ForeignKey(Provider, on_delete=models.CASCADE, verbose_name="Поставщик")
     image_url = models.URLField(null=True, blank=True, verbose_name="Ссылка на картинку")
     status = models.IntegerField(choices=Status.choices, db_index=True, verbose_name="Статус")
-    product = models.ForeignKey(Product, null=True, blank=True, on_delete=models.SET_NULL, verbose_name="Товар")
+    product = models.ForeignKey(Product, related_name='offers', null=True, blank=True, on_delete=models.SET_NULL, verbose_name="Товар")
 
     @property
     def last_offer_price(self):
@@ -48,6 +51,12 @@ class Offer(models.Model):
             .filter(offer=self, status=OfferPrice.Status.PUBLISHED)\
             .order_by("extraction_date")\
             .last()
+
+    @property
+    def three_month_price(self):
+        return OfferPrice.objects\
+            .filter(offer=self).order_by('extraction_date')\
+            .filter(extraction_date__gte=(timezone.now()-timedelta(days=90)))
 
 
 class OfferPrice(models.Model):
@@ -60,7 +69,7 @@ class OfferPrice(models.Model):
         WAITING = 2, 'Ожидает подтверждения'
         PUBLISHED = 3, 'Опубликован'
 
-    offer = models.ForeignKey(Offer, on_delete=models.CASCADE, verbose_name="Оффер")
+    offer = models.ForeignKey(Offer, related_name='prices', on_delete=models.CASCADE, verbose_name="Оффер")
     price_with_vat = models.DecimalField(
         max_length=255, decimal_places=2, max_digits=12, verbose_name="Отпускная цена с НДС"
     )
