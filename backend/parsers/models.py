@@ -12,7 +12,8 @@ class Product(models.Model):
     """
 
     name = models.CharField(max_length=255, verbose_name="Наименование")
-    keywords = ArrayField(models.CharField(max_length=255, verbose_name="Ключевые слова"), null=True, blank=True)
+    measure_unit = models.CharField(null=True, blank=True, max_length=255, verbose_name="Единица измерения")
+    resource_code = models.CharField(null=True, blank=True, max_length=255, verbose_name="Код строительного ресурса")
 
 
 class Provider(models.Model):
