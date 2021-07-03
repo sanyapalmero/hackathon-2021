@@ -1,5 +1,9 @@
+import hashlib
+import os
+
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
+from django.utils import timezone
 
 
 class Product(models.Model):
@@ -8,7 +12,8 @@ class Product(models.Model):
     """
 
     name = models.CharField(max_length=255, verbose_name="Наименование")
-    keywords = ArrayField(models.CharField(max_length=255, verbose_name="Ключевые слова"), null=True, blank=True)
+    measure_unit = models.CharField(null=True, blank=True, max_length=255, verbose_name="Единица измерения")
+    resource_code = models.CharField(null=True, blank=True, max_length=255, verbose_name="Код строительного ресурса")
 
 
 class Provider(models.Model):
@@ -72,3 +77,23 @@ class OfferPrice(models.Model):
     )
     extraction_date = models.DateTimeField(verbose_name="Дата извлечения")
     status = models.IntegerField(choices=Status.choices, db_index=True, verbose_name="Статус")
+    screenshot_pdf_url = models.CharField(max_length=255, null=True, blank=True, verbose_name="Ссылка на скриншот PDF")
+
+
+def get_excel_file_path(excel_report, filename):
+    filename, ext = os.path.splitext(filename)
+    hasher = hashlib.sha1()
+    hasher.update((filename + str(timezone.now())).encode('utf-8'))
+    return os.path.join('excel-report', hasher.hexdigest() + ext.lower())
+
+
+class ExcelReport(models.Model):
+    excel = models.FileField(upload_to=get_excel_file_path, verbose_name='файл excel')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'отчет excel'
+        verbose_name_plural = 'отчеты excel'
+        ordering = (
+            '-created_at',
+        )
