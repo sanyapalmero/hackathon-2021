@@ -11,6 +11,16 @@
   },
   {
     "model": "parsers.Provider",
+    "pk": 2,
+    "fields": {
+      "name": "ООО ТД \"Комплекс-С\"",
+      "inn": "6672237611",
+      "kpp": "667201001",
+      "warehouse_location": "Оренбург"
+    }
+  },
+  {
+    "model": "parsers.Provider",
     "pk": 3,
     "fields": {
       "name": "ООО 'Стройдеталь'",
@@ -21,12 +31,12 @@
   },
   {
     "model": "parsers.Provider",
-    "pk": 2,
+    "pk": 4,
     "fields": {
-      "name": "ООО ТД \"Комплекс-С\"",
-      "inn": "6672237611",
-      "kpp": "667201001",
-      "warehouse_location": "Оренбург"
+      "name": "АО Сталепромышленная компания",
+      "inn": "6671197148",
+      "kpp": "667101001",
+      "warehouse_location": "Оренбургская обл., г. Оренбург, Локомотивная, д. 37"
     }
   }
 ]
