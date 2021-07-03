@@ -1,0 +1,8 @@
+.auth {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &_content {
+    min-width: 380px;
+  }
+}

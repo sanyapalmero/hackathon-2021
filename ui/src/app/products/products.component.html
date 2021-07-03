@@ -1,0 +1,18 @@
+<tui-loader [overlay]="true" [showLoader]="loading$ | async">
+  <table
+  *ngIf="products$ | async as products"
+  tuiTable
+  class="table"
+  [columns]="columns">
+  <thead>
+  <tr tuiThGroup>
+    <th *tuiHead="'name'" tuiTh>Name</th>
+  </tr>
+  </thead>
+  <tbody tuiTbody [data]="products">
+  <tr *tuiRow="let item of products; let index = index" tuiTr>
+    <td *tuiCell="'name'" tuiTd>{{index + 1}}. {{item.name}}</td>
+  </tr>
+  </tbody>
+</table>
+</tui-loader>

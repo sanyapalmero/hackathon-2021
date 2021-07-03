@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --hmr",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
@@ -18,10 +18,13 @@
     "@angular/platform-browser": "~12.0.3",
     "@angular/platform-browser-dynamic": "~12.0.3",
     "@angular/router": "~12.0.3",
+    "@taiga-ui/addon-charts": "^2.12.0",
+    "@taiga-ui/addon-table": "^2.12.0",
     "@taiga-ui/cdk": "^2.12.0",
     "@taiga-ui/core": "^2.12.0",
     "@taiga-ui/icons": "^2.12.0",
     "@taiga-ui/kit": "^2.12.0",
+    "ngx-cookie-service": "^12.0.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.1.0",
     "zone.js": "~0.11.4"
