@@ -97,7 +97,7 @@ def _parse_product(soup: BeautifulSoup) -> Optional[RawOffer]:
         price_without_vat,
         delivery_cost,
         timezone.now(),
-        BASE_URL + product_url,
+        product_url,
         BASE_URL + image_url
     )
 
@@ -114,7 +114,7 @@ def _parse_product(soup: BeautifulSoup) -> Optional[RawOffer]:
         price_without_vat=price_without_vat,
         delivery_cost=delivery_cost,
         extraction_date=timezone.now(),
-        page_url=BASE_URL + product_url,
+        page_url=product_url,
         image_url=BASE_URL + image_url,
         screenshot_pdf_url=screenshot.url if screenshot else None,
     )
