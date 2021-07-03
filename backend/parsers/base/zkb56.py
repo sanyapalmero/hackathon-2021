@@ -42,7 +42,6 @@ def _collect_offers(category_dict) -> Iterator[RawOffer]:
     div_table_offers = soup.find('div', class_='innertCnt')
     table_rows = div_table_offers.find_all('tr')
 
-    offers = []
     for tr in table_rows:
         last_td = tr.findChildren('td', recursive=False)[-1]
         last_td_text = last_td.text.replace(' ', '')
@@ -53,7 +52,7 @@ def _collect_offers(category_dict) -> Iterator[RawOffer]:
             logger.warn('This row does not contain offer')
             continue
 
-        offers.append(RawOffer(
+        yield RawOffer(
             name=tr.findChildren('td', recursive=False)[0].text.strip(),
             measure_unit=category_dict.get('measure_unit'),
             price_with_vat=Decimal(last_td_text),
@@ -62,10 +61,7 @@ def _collect_offers(category_dict) -> Iterator[RawOffer]:
             extraction_date=timezone.now(),
             page_url=category_dict.get('category_url'),
             image_url=''
-        ))
-
-    for offer in offers:
-        yield offer
+        )
 
 
 def parse_offers() -> Iterator[RawOffer]:
