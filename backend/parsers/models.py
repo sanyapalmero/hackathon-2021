@@ -1,5 +1,5 @@
-from django.db import models
 from django.contrib.postgres.fields import ArrayField
+from django.db import models
 
 
 class Product(models.Model):
@@ -72,3 +72,4 @@ class OfferPrice(models.Model):
     )
     extraction_date = models.DateTimeField(verbose_name="Дата извлечения")
     status = models.IntegerField(choices=Status.choices, db_index=True, verbose_name="Статус")
+    screenshot_pdf_url = models.CharField(max_length=255, null=True, blank=True, verbose_name="Ссылка на скриншот PDF")

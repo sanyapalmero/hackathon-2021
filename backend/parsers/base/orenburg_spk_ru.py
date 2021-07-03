@@ -9,6 +9,7 @@ from bs4 import BeautifulSoup
 from django.utils import timezone
 
 from .raw_offer import RawOffer
+from .screenshot import make_screenshot_from_html
 
 logger = logging.getLogger(__name__)
 
@@ -89,7 +90,7 @@ def _parse_product(soup: BeautifulSoup) -> Optional[RawOffer]:
     image_url = image.get("src") if image else None
 
     logger.info(
-        "New offer was successfully parsed: %s | %s | %s | %s | %s | %s | %s | %s", 
+        "New offer was successfully parsed: %s | %s | %s | %s | %s | %s | %s | %s",
         name,
         meausure_unit,
         price_with_vat,
@@ -100,6 +101,12 @@ def _parse_product(soup: BeautifulSoup) -> Optional[RawOffer]:
         BASE_URL + image_url
     )
 
+    try:
+        screenshot = make_screenshot_from_html(product_page.text, product_url)
+    except Exception:
+        logger.exception("Screenshot failed")
+        screenshot = None
+
     return RawOffer(
         name=name,
         measure_unit=meausure_unit,
@@ -108,7 +115,8 @@ def _parse_product(soup: BeautifulSoup) -> Optional[RawOffer]:
         delivery_cost=delivery_cost,
         extraction_date=timezone.now(),
         page_url=BASE_URL + product_url,
-        image_url=BASE_URL + image_url
+        image_url=BASE_URL + image_url,
+        screenshot_pdf_url=screenshot.url if screenshot else None,
     )
 
 

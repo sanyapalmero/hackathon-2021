@@ -8,7 +8,8 @@ import requests
 from bs4 import BeautifulSoup
 from django.utils import timezone
 
-from ..base.raw_offer import RawOffer
+from .raw_offer import RawOffer
+from .screenshot import make_screenshot_from_html
 
 logger = logging.getLogger(__name__)
 
@@ -123,15 +124,22 @@ def _get_offer(offer_url) -> Optional[RawOffer]:
     else:
         image_url = None
 
+    try:
+        screenshot = make_screenshot_from_html(resp.text, offer_url)
+    except Exception:
+        logger.exception("Screenshot failed")
+        screenshot = None
+
     return RawOffer(
         name=name,
-        measure_unit="шт",
+        measure_unit="шт.",
         price_with_vat=price_with_vat,
         price_without_vat=price_without_vat,
         delivery_cost=1300,  # неизвестно
         extraction_date=timezone.now(),
         page_url=offer_url,
         image_url=image_url,
+        screenshot_pdf_url=screenshot.url if screenshot else None,
     )
 
 

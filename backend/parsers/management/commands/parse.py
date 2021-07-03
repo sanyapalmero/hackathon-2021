@@ -34,6 +34,7 @@ class Command(BaseCommand):
                 delivery_cost=raw_offer.delivery_cost,
                 extraction_date=timezone.now(),
                 status=OfferPrice.Status.WAITING,
+                screenshot_pdf_url=raw_offer.screenshot_pdf_url,
             )
             return
 
@@ -44,6 +45,7 @@ class Command(BaseCommand):
         )
         if all_prices_equal:
             last_offer_price.extraction_date = timezone.now()
+            last_offer_price.screenshot_pdf_url = raw_offer.screenshot_pdf_url
             last_offer_price.save()
             return
 
@@ -54,6 +56,7 @@ class Command(BaseCommand):
             delivery_cost=raw_offer.delivery_cost,
             extraction_date=timezone.now(),
             status=OfferPrice.Status.WAITING,
+            screenshot_pdf_url=raw_offer.screenshot_pdf_url,
         )
 
     def handle(self, *args, **options):
