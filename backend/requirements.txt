@@ -6,6 +6,7 @@ chardet==4.0.0
 decorator==5.0.9
 Django==3.2.4
 flake8==3.9.2
+html5lib==1.1
 idna==2.10
 ipython==7.25.0
 ipython-genutils==0.2.0
@@ -24,8 +25,10 @@ pyflakes==2.3.1
 Pygments==2.9.0
 pytz==2021.1
 requests==2.25.1
+six==1.16.0
 soupsieve==2.2.1
 sqlparse==0.4.1
 traitlets==5.0.5
 urllib3==1.26.6
 wcwidth==0.2.5
+webencodings==0.5.1
