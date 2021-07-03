@@ -1,7 +1,7 @@
 from django.core.management import BaseCommand
 from django.utils import timezone
 
-from ...base import complexs
+from ...base import complexs, orenburg_spk_ru, zkb56
 from ...base.raw_offer import RawOffer
 from ...models import Offer, OfferPrice, Provider
 
@@ -61,6 +61,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         parsers = [
+            ("zkb56.ru", zkb56.parse_offers, Provider.objects.get(id=3)),
+            ("orenburg.spk.ru", orenburg_spk_ru.parse_offers, Provider.objects.get(id=4)),
             ("complexs.ru", complexs.parse_offers, Provider.objects.get(id=2)),
         ]
 
