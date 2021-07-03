@@ -11,6 +11,16 @@
   },
   {
     "model": "parsers.Provider",
+    "pk": 3,
+    "fields": {
+      "name": "ООО 'Стройдеталь'",
+      "inn": "5610211650",
+      "kpp": "561001001",
+      "warehouse_location": "Оренбургская обл., г. Оренбург, ул. Беляевская, д. 16"
+    }
+  },
+  {
+    "model": "parsers.Provider",
     "pk": 2,
     "fields": {
       "name": "ООО ТД \"Комплекс-С\"",
