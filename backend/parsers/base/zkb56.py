@@ -1,14 +1,13 @@
 import logging
-import requests
-
-from bs4 import BeautifulSoup
 from decimal import Decimal, InvalidOperation
 from typing import Iterator
 
+import requests
+from bs4 import BeautifulSoup
 from django.utils import timezone
 
 from .raw_offer import RawOffer
-
+from .screenshot import make_screenshot_from_html
 
 logger = logging.getLogger(__name__)
 
@@ -42,6 +41,12 @@ def _collect_offers(category_dict) -> Iterator[RawOffer]:
     div_table_offers = soup.find('div', class_='innertCnt')
     table_rows = div_table_offers.find_all('tr')
 
+    try:
+        screenshot = make_screenshot_from_html(response.text, category_dict.get('category_url'))
+    except Exception:
+        logger.exception("Screenshot failed")
+        screenshot = None
+
     for tr in table_rows:
         last_td = tr.findChildren('td', recursive=False)[-1]
         last_td_text = last_td.text.replace(' ', '')
@@ -60,7 +65,8 @@ def _collect_offers(category_dict) -> Iterator[RawOffer]:
             delivery_cost=category_dict.get('delivery_cost'),
             extraction_date=timezone.now(),
             page_url=category_dict.get('category_url'),
-            image_url=''
+            image_url=None,
+            screenshot_pdf_url=screenshot.url if screenshot else None,
         )
 
 

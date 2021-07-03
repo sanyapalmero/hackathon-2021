@@ -16,6 +16,7 @@ matplotlib-inline==0.1.2
 mccabe==0.6.1
 openpyxl==3.0.7
 parso==0.8.2
+pdfkit==0.6.1
 pexpect==4.8.0
 pickleshare==0.7.5
 prompt-toolkit==3.0.19
