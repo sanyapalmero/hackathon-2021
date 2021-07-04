@@ -43,7 +43,7 @@
                         <button class="btn btn-outline-primary" type="button" id="button-addon2">Найти</button>
                     </div>
                     <div class="list-group mb-3">
-                        <a href="#" class="list-group-item list-group-item-action">Свежие обновления</a>
+                        <a href="{% url 'parsers:products' %}" class="list-group-item list-group-item-action">Свежие обновления</a>
                         <a href="#" class="list-group-item list-group-item-action">Все ресурсы</a>
                         {% if request.user.is_admin %}
                             <a href="#" class="list-group-item list-group-item-action">Управление обновлениями</a>
