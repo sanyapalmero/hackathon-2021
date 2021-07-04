@@ -224,4 +224,7 @@ class OfferExcelReport(BaseExcelReport):
     def generate(self, qs=None):
         self.write_header()
         self.write_data(qs=qs)
-        ExcelReport.objects.create(excel=self.for_django_file_field())
+
+        excel_report = ExcelReport(excel=self.for_django_file_field())
+        excel_report.save()
+        return excel_report
