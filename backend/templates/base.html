@@ -52,7 +52,7 @@
                         </div>
                     </form>
                     <div class="list-group mb-3">
-                        <a href="{% url 'parsers:products' %}" class="list-group-item list-group-item-action">Свежие обновления</a>
+                        <a href="{% url 'parsers:updates' %}" class="list-group-item list-group-item-action">Свежие обновления</a>
                         <a href="{% url 'parsers:search-offers' %}" class="list-group-item list-group-item-action">Все ресурсы</a>
                         {% if request.user.is_admin %}
                             <a href="#" class="list-group-item list-group-item-action">Управление обновлениями</a>
