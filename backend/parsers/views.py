@@ -1,4 +1,5 @@
 from django.core.paginator import Paginator
+from django.db.models import Q
 from django.utils.decorators import method_decorator
 from django.views import generic
 from users.decorators import login_required
@@ -29,3 +30,27 @@ class ProductView(generic.DetailView):
         context["offers"] = offers
 
         return context
+
+
+class SearchOfferView(generic.ListView):
+    template_name_suffix = '-search'
+    model = Offer
+    paginate_by = 30
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+
+        search_offers_str = self.request.GET.get('search_offers_str')
+
+        query = (
+            Q(name__icontains=search_offers_str) |
+            Q(provider__name__icontains=search_offers_str) |
+            Q(product__name__icontains=search_offers_str)
+        )
+
+        if not search_offers_str:
+            return qs
+
+        qs = qs.filter(query)
+
+        return qs
