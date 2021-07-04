@@ -30,7 +30,7 @@
                         {% endif %}
                     </td>
                     <td>
-                        <a href="#">{{ offer.name }}</a>
+                        <a href="{% url 'parsers:offer' pk=offer.pk %}">{{ offer.name }}</a>
                     </td>
                     <td>{{ offer.provider.name }}</td>
                     <td>{{ offer.get_status_display }}</td>
