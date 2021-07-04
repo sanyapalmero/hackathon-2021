@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductsService } from "../products.service";
-import { Route } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
+import { switchAll, switchMap } from "rxjs/operators";
 
 @Component({
   selector: 'app-product',
@@ -10,8 +11,11 @@ import { Route } from "@angular/router";
 export class ProductComponent implements OnInit {
 
   constructor(private service: ProductsService,
-              private route: Route) { }
-  data$ = this.service
+              private route: ActivatedRoute) {
+  }
+
+  data$ = this.route.params.pipe(switchMap(params => this.service.getProduct(params['id'])));
+
   ngOnInit(): void {
   }
 

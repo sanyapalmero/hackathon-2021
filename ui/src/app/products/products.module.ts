@@ -9,6 +9,7 @@ import { TuiTableModule, TuiTablePaginationModule } from "@taiga-ui/addon-table"
 import { TuiLetModule } from "@taiga-ui/cdk";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ProductComponent } from './product/product.component';
+import { TableModule } from "primeng/table";
 
 
 @NgModule({
@@ -16,20 +17,21 @@ import { ProductComponent } from './product/product.component';
     ProductsComponent,
     ProductComponent
   ],
-  imports: [
-    CommonModule,
-    ProductsRoutingModule,
-    TuiTableModeModule,
-    TuiButtonModule,
-    TuiTagModule,
-    TuiLinkModule,
-    TuiTableModule,
-    TuiLetModule,
-    TuiLoaderModule,
-    TuiInputModule,
-    TuiTablePaginationModule,
-    FormsModule,
-    ReactiveFormsModule
-  ]
+    imports: [
+        CommonModule,
+        ProductsRoutingModule,
+        TuiTableModeModule,
+        TuiButtonModule,
+        TuiTagModule,
+        TuiLinkModule,
+        TuiTableModule,
+        TuiLetModule,
+        TuiLoaderModule,
+        TuiInputModule,
+        TuiTablePaginationModule,
+        FormsModule,
+        ReactiveFormsModule,
+        TableModule
+    ]
 })
 export class ProductsModule { }

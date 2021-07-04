@@ -3,49 +3,67 @@
   <tui-input formControlName="offers__name__icontains">Поиск по преложениям...</tui-input>
   <tui-input formControlName="resource_code__icontains">Поиск по коду...</tui-input>
 </form>
-<tui-loader [overlay]="true" [showLoader]="loading$ | async">
-  <table
-    *tuiLet="data$ | async as products"
-    tuiTable
-    class="table"
-    [columns]="columns">
-    <thead>
-    <tr tuiThGroup>
-      <th *tuiHead="'name'" tuiTh [sorter]="null">
-        Имя
-      </th>
-      <th *tuiHead="'measure_unit'" tuiTh [sorter]="null">
-        Ед. изм.
-      </th>
-      <th *tuiHead="'resource_code'" tuiTh [sorter]="null">
-        Код
-      </th>
-      <th *tuiHead="'offers_count'" tuiTh [sorter]="null">
-        Кол-во предложений
-      </th>
-    </tr>
-    </thead>
-    <tbody tuiTbody [data]="products">
-    <tr *tuiRow="let item of products; let index = index" tuiTr>
-      <td
-        *tuiCell="'offers_count'"
-        tuiTd
-      >
-        <a tuiLink routerLink="/products/{{item.id}}">{{item.offers_count}}</a>
-      </td>
-    </tr>
-    </tbody>
-    <tfoot>
+<table
+  *tuiLet="data$ | async as products"
+  tuiTable
+  class="table"
+  [columns]="columns">
+  <thead>
+  <tr tuiThGroup>
+    <th *tuiHead="'name'" tuiTh [sorter]="null">
+      Имя
+    </th>
+    <th *tuiHead="'measure_unit'" tuiTh [sorter]="null">
+      Ед. изм.
+    </th>
+    <th *tuiHead="'resource_code'" tuiTh [sorter]="null">
+      Код
+    </th>
+    <th *tuiHead="'offers_count'" tuiTh [sorter]="null">
+      Кол-во предложений
+    </th>
+  </tr>
+  </thead>
+  <tbody tuiTbody [data]="products">
+  <tr *tuiRow="let item of products; let index = index" tuiTr>
+    <td
+      *tuiCell="'offers_count'"
+      tuiTd
+    >
+      <a tuiLink routerLink="/products/{{item.id}}">{{item.offers_count}}</a>
+    </td>
+  </tr>
+  </tbody>
+  <tfoot>
+  <tr>
+    <td [colSpan]="columns.length">
+      <tui-table-pagination
+        class="tui-space_top-2"
+        [total]="total$ | async"
+        (pageChange)="onPage($event)"
+        (sizeChange)="onSize($event)"
+      ></tui-table-pagination>
+    </td>
+  </tr>
+  </tfoot>
+</table>
+<p-table [value]="data$ | async">
+  <ng-template pTemplate="header">
     <tr>
-      <td [colSpan]="columns.length">
-        <tui-table-pagination
-          class="tui-space_top-2"
-          [total]="total$ | async"
-          (pageChange)="onPage($event)"
-          (sizeChange)="onSize($event)"
-        ></tui-table-pagination>
+      <th>Имя</th>
+      <th>Ед. изм.</th>
+      <th>Код</th>
+      <th> Кол-во предложений</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-product>
+    <tr>
+      <td>{{product.name}}</td>
+      <td>{{product.measure_unit}}</td>
+      <td>{{product.resource_code}}</td>
+      <td>
+        <a tuiLink routerLink="/products/{{product.id}}">{{product.offers_count}}</a>
       </td>
     </tr>
-    </tfoot>
-  </table>
-</tui-loader>
+  </ng-template>
+</p-table>
