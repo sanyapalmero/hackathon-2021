@@ -1,12 +1,15 @@
 from django.core.paginator import Paginator
 from django.db import models
 from django.db.models import Q
+from django.http import HttpResponse
+from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views import generic
 from users.decorators import login_required
 
 from .forms import OfferFilterForm
 from .models import Offer, Product
+from .services.excel_report import OfferExcelReport
 
 
 class ProductsView(generic.ListView):
@@ -62,6 +65,31 @@ class SearchOfferView(generic.ListView):
         context = super().get_context_data(**kwargs)
         context['form'] = self.form_class(self.request.GET)
         return context
+
+    def _get_excel(self, request, qs):
+        excel_file = OfferExcelReport(
+            sheet_name='Отчет на {}'.format(timezone.now().strftime('%d.%m.%Y'))
+        )
+        excel_file.generate(qs=qs)
+
+        response = HttpResponse(
+            excel_file.for_http_response(),
+            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
+        response['Content-Disposition'] = 'attachment; filename=%s' % excel_file.filename
+        return response
+
+    def get(self, request):
+        form = self.form_class(request.GET)
+
+        if form.is_valid():
+            excel = form.cleaned_data['excel']
+            print("_____________________________________________")
+            print(excel)
+            if excel:
+                return self._get_excel(request=request, qs=self.get_queryset())
+
+        return super().get(request)
 
     def get_queryset(self):
         qs = super().get_queryset()

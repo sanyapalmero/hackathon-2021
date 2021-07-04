@@ -25,3 +25,10 @@ class OfferFilterForm(forms.Form):
         required=False,
         label='Дата до'
     )
+
+    excel = forms.BooleanField(
+        required=False,
+        widget=forms.CheckboxInput(attrs={
+            'class': 'form-check-input'
+        })
+    )
