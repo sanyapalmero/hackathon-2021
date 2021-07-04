@@ -9,7 +9,8 @@ import parsers.views
 router = DefaultRouter()
 
 router.register(r'products', parsers.views.ProductViewSet)
-router.register(r'offers', parsers.views.OffersViewSet)
+router.register(r'offers', parsers.views.OfferViewSet)
+router.register(r'offer_prices', parsers.views.OfferPriceViewSet)
 
 urlpatterns = [
     path('api/', include(router.urls)),

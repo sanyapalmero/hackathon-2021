@@ -1,12 +1,30 @@
 import django_filters
 from django_filters.rest_framework import FilterSet
 
+from . import models
 
 class ProductFilterSet(FilterSet):
-    name = django_filters.CharFilter()
-    name__icontains = django_filters.CharFilter(field_name='name', lookup_expr='icontains')
+    class Meta:
+        model = models.Product
+        fields = {
+            'name': ['exact', 'icontains'],
+            'offers__name': ['exact', 'icontains'],
+            'resource_code': ['exact', 'icontains'],
+        }
 
-    offers__name = django_filters.CharFilter(field_name='offers__name')
-    offers__name__icontains = django_filters.CharFilter(field_name='offers__name', lookup_expr='icontains')
 
-    resource_code = django_filters.CharFilter(field_name='resource_code')
+class OfferFilterSet(FilterSet):
+    class Meta:
+        model = models.Offer
+        fields = {
+            'product__id': ['exact']
+        }
+
+
+class OfferPriceFilterSet(FilterSet):
+    class Meta:
+        model = models.OfferPrice
+        fields = {
+            'offer__id': ['exact'],
+            'offer__product__id': ['exact'],
+        }
