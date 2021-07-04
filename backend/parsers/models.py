@@ -71,8 +71,19 @@ class Offer(models.Model):
             .order_by("extraction_date")\
             .last()
 
+    @property
+    def last_waiting_offer_price(self):
+        return OfferPrice.objects\
+            .filter(offer=self, status=OfferPrice.Status.WAITING)\
+            .order_by("extraction_date")\
+            .last()
+
     def get_absolute_url(self):
         return reverse("parsers:offer", kwargs={"pk": self.pk})
+
+    @property
+    def is_waiting(self):
+        return self.status == self.Status.WAITING
 
 
 class OfferPrice(models.Model):
