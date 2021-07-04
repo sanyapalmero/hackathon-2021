@@ -4,14 +4,17 @@ import { CommonModule } from '@angular/common';
 import { ProductsRoutingModule } from './products-routing.module';
 import { ProductsComponent } from './products.component';
 import { TuiButtonModule, TuiLinkModule, TuiLoaderModule, TuiTableModeModule } from "@taiga-ui/core";
-import { TuiTagModule } from "@taiga-ui/kit";
-import { TuiTableModule } from "@taiga-ui/addon-table";
+import { TuiInputModule, TuiTagModule } from "@taiga-ui/kit";
+import { TuiTableModule, TuiTablePaginationModule } from "@taiga-ui/addon-table";
 import { TuiLetModule } from "@taiga-ui/cdk";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { ProductComponent } from './product/product.component';
 
 
 @NgModule({
   declarations: [
-    ProductsComponent
+    ProductsComponent,
+    ProductComponent
   ],
   imports: [
     CommonModule,
@@ -22,7 +25,11 @@ import { TuiLetModule } from "@taiga-ui/cdk";
     TuiLinkModule,
     TuiTableModule,
     TuiLetModule,
-    TuiLoaderModule
+    TuiLoaderModule,
+    TuiInputModule,
+    TuiTablePaginationModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class ProductsModule { }

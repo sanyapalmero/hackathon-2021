@@ -2,11 +2,24 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 1em;
+  padding: 1em;
+  box-shadow: 0 0.125rem 1rem rgb(0 0 0 / 8%);
 }
+
 main {
   display: flex;
+  align-items: stretch;
+  height: 100%;
+  padding-top: 1em;
 }
+
+router-outlet {
+  height: auto;
+}
+
 app-navbar {
-  flex: 0 1 180px;
+  flex-basis: 180px;
+  min-width: 180px;
+  height: auto;
 }
+
