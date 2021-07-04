@@ -43,6 +43,7 @@
                     <div class="chart-component"
                          data-dates="{% for _, j in product_price_range %}{{ j }}{% if not forloop.last %}, {% endif %}{% endfor %}"
                          data-prices="{% for i, _ in product_price_range %}{{ i }}{% if not forloop.last %}, {% endif %}{% endfor %}">
+                        <canvas id="canvas"></canvas>
                     </div>
                 </div>
             </div>
