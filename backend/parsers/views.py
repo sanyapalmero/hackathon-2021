@@ -1,9 +1,13 @@
+from requests import Response
+from rest_framework import status
+from rest_framework.decorators import action
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
 from rest_framework.viewsets import GenericViewSet
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 from .models import Product, Offer, OfferPrice
-from .serializers import ProductListSerializer, OfferDetailSerializer, ProductDetailSerializer, OfferPriceSerializer
+from .serializers import ProductListSerializer, OfferDetailSerializer, ProductDetailSerializer, OfferPriceSerializer, \
+    OfferApproveSerializer, OfferPriceApproveSerializer
 from .filters import ProductFilterSet, OfferFilterSet, OfferPriceFilterSet
 
 
@@ -23,14 +27,55 @@ class ProductViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
 
 
 class OfferViewSet(RetrieveModelMixin, ListModelMixin, GenericViewSet):
-    queryset = Offer.objects.filter(status=Offer.Status.PUBLISHED.value).prefetch_related('prices')
+    queryset = Offer.objects.all().prefetch_related('prices')
     serializer_class = OfferDetailSerializer
     permission_classes = [IsAuthenticated, ]
     filterset_class = OfferFilterSet
 
 
+    serializers_mapping = {
+        'list': OfferDetailSerializer,
+        'retrieve': OfferDetailSerializer,
+        'approve': OfferApproveSerializer,
+    }
+
+    def get_serializer_class(self):
+        return self.serializers_mapping.get(self.action, self.serializer_class)
+
+    @action(
+        detail=False,
+        methods=['post'],
+        permission_classes=[IsAuthenticated, IsAdminUser],
+        url_path='approve',
+    )
+    def approve(self, request, *args, **kwargs):
+        serializer = self.get_serializer()(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.approve()
+
+        return Response(status=status.HTTP_200_OK)
+
+
 class OfferPriceViewSet(ListModelMixin, GenericViewSet):
-    queryset = OfferPrice.objects.filter(status=OfferPrice.Status.PUBLISHED.value)
+    queryset = OfferPrice.objects.all()
     serializer_class = OfferPriceSerializer
     permission_classes = [IsAuthenticated, ]
     filter_class = OfferPriceFilterSet
+
+    serializers_mapping = {
+        'list': OfferPriceSerializer,
+        'approve': OfferPriceApproveSerializer,
+    }
+
+    @action(
+        detail=False,
+        methods=['post'],
+        permission_classes=[IsAuthenticated, IsAdminUser],
+        url_path='approve',
+    )
+    def approve(self, request, *args, **kwargs):
+        serializer = self.get_serializer()(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.approve()
+
+        return Response(status=status.HTTP_200_OK)
