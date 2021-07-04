@@ -9,7 +9,8 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .models import Product, Offer, OfferPrice
 from .serializers import ProductListSerializer, OfferDetailSerializer, ProductDetailSerializer, OfferPriceSerializer, \
     OfferApproveSerializer, OfferPriceApproveSerializer, OfferExcelSerializer
-from .filters import ProductFilterSet, OfferFilterSet, OfferPriceFilterSet, OfferExcelFilterSet
+from .filters import ProductFilterSet, OfferFilterSet, OfferPriceFilterSet
+from .services.excel_report import OfferExcelReport
 
 
 class ProductViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
@@ -27,17 +28,8 @@ class ProductViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
         return self.serializers_mapping.get(self.action, self.serializer_class)
 
 
-class ExcelOffersViewSet(GenericAPIView):
-    serializer_class = OfferExcelSerializer
-    permission_classes = [IsAuthenticated, ]
-    filterset_class = OfferExcelFilterSet
-
-    def get(self, request, *args, **kwargs):
-        pass
-
-
 class OfferViewSet(RetrieveModelMixin, ListModelMixin, GenericViewSet):
-    queryset = Offer.objects.all().prefetch_related('prices')
+    queryset = Offer.objects.all().select_related('product', 'product').prefetch_related('prices')
     serializer_class = OfferDetailSerializer
     permission_classes = [IsAuthenticated, ]
     filterset_class = OfferFilterSet
@@ -46,6 +38,7 @@ class OfferViewSet(RetrieveModelMixin, ListModelMixin, GenericViewSet):
         'list': OfferDetailSerializer,
         'retrieve': OfferDetailSerializer,
         'approve': OfferApproveSerializer,
+        'excel': OfferExcelSerializer,
     }
 
     def get_serializer_class(self):
@@ -63,6 +56,19 @@ class OfferViewSet(RetrieveModelMixin, ListModelMixin, GenericViewSet):
         serializer.approve()
 
         return Response(status=status.HTTP_200_OK)
+
+    @action(
+        detail=False,
+        methods=['get'],
+        permission_classes=[IsAuthenticated, IsAdminUser],
+        url_path='excel',
+    )
+    def excel(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        reporter = OfferExcelReport()
+        report = reporter.generate(queryset)
+
+        return Response({'link': report.excel.url}, status=status.HTTP_200_OK)
 
 
 
