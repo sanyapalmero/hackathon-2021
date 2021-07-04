@@ -4,7 +4,7 @@
 
 ```
 cd backend
-docker-compose up
+docker-compose up --build
 ```
 
 В такой конфигурации проект слушает порт 8080.
