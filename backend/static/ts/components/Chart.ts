@@ -29,8 +29,8 @@ export default class ChartComponent {
                 datasets: [{
                     label: "Цена",
                     data: values,
-                    backgroundColor: 'rgba(255, 99, 132, 1)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
+                    backgroundColor: '#3459E6',
+                    borderColor: '#3459E6',
                     pointRadius: 4,
                     pointHoverRadius: 8
                 }]
