@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Управление обновлениями{% endblock %}
+
+{% block content %}
+    <h1>Управление обновлениями</h1>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Наименование</th>
+                <th>Обновлено</th>
+                <th>Изменение</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for offer in page_obj %}
+                <tr>
+                    <th>
+                        <a href="{{ offer.get_absolute_url }}">
+                            {{ offer.name }}
+                        </a>
+                    </th>
+                    <td>
+                        {{ offer.last_updated }}
+                    </td>
+                    <td>
+                        {% if offer.is_waiting %}
+                            <span class="text-success">Новое предложение</span>
+                        {% else %}
+                            <span class="text-info">{{ offer.last_offer_price.price_with_vat|stringformat:".2f" }} руб</span>
+                            →
+                            <span class="text-info">{{ offer.last_waiting_offer_price.price_with_vat|stringformat:".2f" }} руб</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <form action="{% url 'parsers:accept-update' pk=offer.pk %}" method="post" class="d-inline-block">
+                            {% csrf_token %}
+                            <button class="btn btn-primary">Принять</button>
+                        </form>
+                        <form action="{% url 'parsers:decline-update' pk=offer.pk %}" method="post" class="d-inline-block">
+                            {% csrf_token %}
+                            <button class="btn btn-outline-danger">Отменить</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% include "partial/pagination.html" with page_obj=page_obj %}
+{% endblock %}

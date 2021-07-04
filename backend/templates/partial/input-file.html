@@ -1,6 +1,6 @@
 {% load l10n %}
 
-<div class="form-group {% if field_name.errors %}has-danger{% endif %}">
+<div class="{% if field_name.errors %}has-danger{% endif %}">
     {{ field_name.label_tag }}
     <div class="custom-file {% if field_name.errors %}is-invalid{% endif %}">
         <input
