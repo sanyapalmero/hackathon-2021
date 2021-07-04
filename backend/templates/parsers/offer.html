@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}{{ offer.name }}{% endblock %}
+
+{% block content %}
+    <h1>{{ offer.name }}</h1>
+    {% if offer.product %}
+        <p class="text-muted">
+            КСР: {{ offer.product.resource_code }}
+        </p>
+    {% endif %}
+
+    {% if offer.image_url %}
+        <img src="{{ offer.image_url }}" style="max-width: 300px; height: auto;">
+    {% endif %}
+
+    <div class="row">
+        <div class="col-12 col-sm-6">
+            <h2>Цена</h2>
+            <table class="table table-bordered">
+                <tr>
+                    <th>Цена с НДС</th>
+                    <td>{{ offer.last_offer_price.price_with_vat|default:"-" }} руб/{{ offer.measure_unit }}</td>
+                </tr>
+                <tr>
+                    <th>Цена без НДС</th>
+                    <td>{{ offer.last_offer_price.price_without_vat|default:"-" }} руб/{{ offer.measure_unit }}</td>
+                </tr>
+                <tr>
+                    <th>Доставка до Оренбурга</th>
+                    <td>{{ offer.last_offer_price.delivery_cost|default:"-" }} руб</td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-12 col-sm-6">
+            <h2>Поставщик</h2>
+            <table class="table table-bordered">
+                <tr>
+                    <th>Наименование</th>
+                    <td>{{ offer.provider.name }}</td>
+                </tr>
+                <tr>
+                    <th>ИНН</th>
+                    <td>{{ offer.provider.inn }}</td>
+                </tr>
+                <tr>
+                    <th>КПП</th>
+                    <td>{{ offer.provider.kpp }}</td>
+                </tr>
+                <tr>
+                    <th>Расположение ближайшего склада</th>
+                    <td>{{ offer.provider.warehouse_location }}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-12 col-sm-6">
+            <h2>Источник</h2>
+            <table class="table table-bordered">
+                <tr>
+                    <th>Страница</th>
+                    <td>
+                        <a href="{{ offer.page_url }}">{{ offer.page_url }}</a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Обновлено</th>
+                    <td>{{ offer.last_updated }}</td>
+                </tr>
+                {% if offer.last_offer_price %}
+                    <tr>
+                        <th>Снимок страницы</th>
+                        <td>
+                            <a href="{{ offer.last_offer_price.screenshot_pdf_url }}" target="_blank">PDF</a>
+                        </td>
+                    </tr>
+                {% endif %}
+            </table>
+        </div>
+    </div>
+{% endblock %}

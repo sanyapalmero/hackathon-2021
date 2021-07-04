@@ -50,7 +50,7 @@
                         <p class="card-text">{{ offer.provider.name }}</p>
                         <p class="card-text">Обновлено {{ offer.last_updated|date }}</p>
                         <p class="card-text">{{ offer.last_offer_price.price_with_vat }} руб/{{ offer.measure_unit }}</p>
-                        <a href="#" class="btn btn-outline-primary">Подробнее</a>
+                        <a href="{{ offer.get_absolute_url }}" class="btn btn-outline-primary">Подробнее</a>
                     </div>
                 </div>
             </div>

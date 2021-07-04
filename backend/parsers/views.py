@@ -37,3 +37,9 @@ class ProductView(generic.DetailView):
         context["avg_price"] = aggr["avg_price"]
 
         return context
+
+
+@method_decorator(login_required, name="dispatch")
+class OfferView(generic.DetailView):
+    model = Offer
+    template_name = "parsers/offer.html"
