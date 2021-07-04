@@ -1,4 +1,3 @@
-from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import action
@@ -14,7 +13,7 @@ from .services.excel_report import OfferExcelReport
 
 
 class ProductViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
-    queryset = Product.objects.all().prefetch_related('offers', 'offers__prices').order_by('name').distinct()
+    queryset = Product.objects.all().prefetch_related('offers', 'offers__prices').distinct()
     filterset_class = ProductFilterSet
     serializer_class = ProductListSerializer
     permission_classes = [IsAuthenticated, ]

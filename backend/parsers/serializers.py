@@ -129,20 +129,26 @@ class ProductDetailSerializer(serializers.ModelSerializer):
     min_offer_price = serializers.SerializerMethodField()
 
     def get_avg_offer_price(self, instance):
-        return Product.objects.filter(
+        value = Product.objects.filter(
             id=instance.id,
             offers__prices__status=OfferPrice.Status.PUBLISHED
         ).annotate(
             avg_price=models.Avg('offers__prices__price_with_vat')
-        ).values_list('avg_price', flat=True)[0]
+        ).values_list('avg_price', flat=True)
+        if value:
+            return value[0]
+        return 0
 
     def get_min_offer_price(self, instance):
-        return Product.objects.filter(
+        value = Product.objects.filter(
             id=instance.id,
             offers__prices__status=OfferPrice.Status.PUBLISHED
         ).annotate(
             avg_price=models.Min('offers__prices__price_with_vat')
-        ).values_list('avg_price', flat=True)[0]
+        ).values_list('avg_price', flat=True)
+        if value:
+            return value[0]
+        return 0
 
     class Meta:
         model = Product

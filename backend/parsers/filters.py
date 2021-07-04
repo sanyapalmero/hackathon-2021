@@ -1,9 +1,11 @@
-from django_filters.rest_framework import FilterSet
+from django_filters.rest_framework import FilterSet, OrderingFilter
 
 from . import models
 
 
 class ProductFilterSet(FilterSet):
+    ordering = OrderingFilter(fields=['offers__last_updated', 'name'])
+
     class Meta:
         model = models.Product
         fields = {
