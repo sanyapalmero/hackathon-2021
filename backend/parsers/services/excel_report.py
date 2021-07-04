@@ -173,7 +173,7 @@ class OfferExcelReport(BaseExcelReport):
         if qs is None:
             return
 
-        for index, offer in enumerate(qs[:15]):
+        for index, offer in enumerate(qs):
             self._write_cell('A' + str(offset + index), index + 1)
             offer_product = offer.product
             if offer_product:
