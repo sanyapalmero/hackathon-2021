@@ -17,7 +17,8 @@ class OfferFilterSet(FilterSet):
     class Meta:
         model = models.Offer
         fields = {
-            'product__id': ['exact']
+            'product__id': ['exact'],
+            'status': ['exact']
         }
 
 
@@ -27,4 +28,6 @@ class OfferPriceFilterSet(FilterSet):
         fields = {
             'offer__id': ['exact'],
             'offer__product__id': ['exact'],
+            'status': ['exact'],
+            'extraction_date': ['exact', 'lte', 'gte', 'gt', 'lt']
         }

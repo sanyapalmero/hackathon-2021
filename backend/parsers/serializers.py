@@ -4,10 +4,40 @@ from django.db import models
 from rest_framework import serializers
 
 
+class CustomChoiceField(serializers.ChoiceField):
+
+    def to_representation(self, obj):
+        if obj == '' and self.allow_blank:
+            return obj
+        return self._choices[obj]
+
+    def to_internal_value(self, data):
+        # To support inserts with the value
+        if data == '' and self.allow_blank:
+            return ''
+
+        for key, val in self._choices.items():
+            if val == data:
+                return key
+        self.fail('invalid_choice', input=data)
+
+
 class OfferPriceSerializer(serializers.ModelSerializer):
+    status = CustomChoiceField(choices=OfferPrice.Status.choices)
+
     class Meta:
         model = OfferPrice
         fields = '__all__'
+
+
+class OfferPriceApproveSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OfferPrice
+        fields = ('id',)
+
+    def approve(self):
+        self.instance.state = Offer.Status.PUBLISHED.value
+        self.instance.save(update_fields=('state',))
 
 
 class OfferSerializer(serializers.ModelSerializer):
@@ -47,7 +77,7 @@ class OfferSerializerWithoutPrice(OfferSerializer):
 
 
 class OfferDetailSerializer(serializers.ModelSerializer):
-    prices = OfferPriceSerializer(many=True, source='three_month_price')
+    status = CustomChoiceField(choices=Offer.Status.choices)
 
     class Meta:
         model = Offer
@@ -62,8 +92,19 @@ class OfferDetailSerializer(serializers.ModelSerializer):
             'image_url',
             'status',
             'product',
-            'prices',
         )
+
+
+class OfferApproveSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Offer
+        fields = (
+            'id',
+        )
+
+    def approve(self):
+        self.instance.state = Offer.Status.PUBLISHED.value
+        self.instance.save(update_fields=('state',))   
 
 
 class ProductListSerializer(serializers.ModelSerializer):
