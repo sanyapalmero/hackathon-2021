@@ -71,7 +71,6 @@ class OfferViewSet(RetrieveModelMixin, ListModelMixin, GenericViewSet):
         return Response({'link': report.excel.url}, status=status.HTTP_200_OK)
 
 
-
 class OfferPriceViewSet(ListModelMixin, GenericViewSet):
     queryset = OfferPrice.objects.all()
     serializer_class = OfferPriceSerializer

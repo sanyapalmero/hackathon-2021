@@ -101,9 +101,6 @@ class OfferExcelSerializer(serializers.ModelSerializer):
         fields = ()
 
 
-    def excel(self, query):
-        pass
-
 class OfferApproveSerializer(serializers.ModelSerializer):
     class Meta:
         model = Offer
