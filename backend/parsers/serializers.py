@@ -16,6 +16,7 @@ class OfferSerializer(serializers.ModelSerializer):
     class Meta:
         model = Offer
         fields = (
+            'id',
             'resource_code',
             'name',
             'measure_unit',
@@ -33,6 +34,7 @@ class OfferSerializerWithoutPrice(OfferSerializer):
     class Meta:
         model = Offer
         fields = (
+            'id',
             'resource_code',
             'name',
             'measure_unit',
@@ -50,6 +52,7 @@ class OfferDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Offer
         fields = (
+            'id',
             'resource_code',
             'name',
             'measure_unit',
