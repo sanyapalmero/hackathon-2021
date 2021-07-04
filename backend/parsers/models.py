@@ -18,6 +18,10 @@ class Product(models.Model):
     measure_unit = models.CharField(null=True, blank=True, max_length=255, verbose_name="Единица измерения")
     resource_code = models.CharField(null=True, blank=True, max_length=255, verbose_name="Код строительного ресурса")
 
+    @property
+    def published_offers(self):
+        return self.offers.filter(status=Offer.Status.PUBLISHED.value)
+
 
 class Provider(models.Model):
     """

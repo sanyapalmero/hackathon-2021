@@ -11,7 +11,7 @@ from .filters import ProductFilterSet
 
 
 class ProductViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
-    queryset = Product.objects.filter(offers__status=Offer.Status.PUBLISHED.value).prefetch_related('offers', 'offers__prices')
+    queryset = Product.objects.all().prefetch_related('offers', 'offers__prices').distinct()
     filterset_class = ProductFilterSet
     serializer_class = ProductListSerializer
     permission_classes = [IsAuthenticated, ]
