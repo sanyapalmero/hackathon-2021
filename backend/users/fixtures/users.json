@@ -1,0 +1,14 @@
+[
+{
+  "model": "users.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$260000$0VauP1rQWwvjsujPmp2ST7$eVoFUdzDLNtq8nvMcAGSwISgrG3sEhwTXALtSGvRgjo=",
+    "last_login": "2021-07-04T11:28:35.202Z",
+    "username": "Администратор",
+    "email": "admin@avagner.ru",
+    "role": "admin",
+    "created_at": "2021-07-04T11:28:21.551Z"
+  }
+}
+]
