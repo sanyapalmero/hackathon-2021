@@ -11,7 +11,9 @@
                     <img src="{{ product.image_url }}" class="card-img-top">
                 {% endif %}
                 <div class="card-body">
-                    <p class="card-text">{{ product.resource_code }}</p>
+                    {% if product.resource_code %}
+                        <p class="card-text">{{ product.resource_code }}</p>
+                    {% endif %}
                     <a href="{% url 'parsers:product' product.id %}" class="btn btn-primary">Посмотреть</a>
                 </div>
             </div>

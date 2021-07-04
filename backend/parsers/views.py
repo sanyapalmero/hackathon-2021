@@ -9,7 +9,7 @@ from .models import Offer, Product
 
 
 class ProductsView(generic.ListView):
-    template_name = 'parsers/products.html'
+    template_name = 'parsers/updates.html'
     model = Product
     paginate_by = 20
 
