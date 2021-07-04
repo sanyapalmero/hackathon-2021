@@ -64,11 +64,14 @@ class OfferDetailSerializer(serializers.ModelSerializer):
 
 
 class ProductListSerializer(serializers.ModelSerializer):
-    offers = OfferSerializer(many=True, source='published_offers')
+    offers_count = serializers.SerializerMethodField()
+
+    def get_offers_count(self, instance):
+        return instance.offers.count()
 
     class Meta:
         model = Product
-        fields = ('id', 'name', 'measure_unit', 'resource_code', 'offers')
+        fields = ('id', 'name', 'measure_unit', 'resource_code', 'offers_count')
 
 
 class ProductDetailSerializer(serializers.ModelSerializer):
@@ -98,7 +101,7 @@ class ProductDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ('id', 'name', 'keywords', 'avg_offer_price', 'min_offer_price', 'offers', 'prices')
+        fields = ('id', 'name', 'measure_unit', 'resource_code', 'avg_offer_price', 'min_offer_price', 'offers', 'prices')
 
 
 class ProviderSerializer(serializers.ModelSerializer):
