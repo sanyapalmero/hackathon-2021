@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block title %}{{ product.name }}{% endblock %}
 
 {% block content %}
@@ -10,4 +12,49 @@
         </p>
     {% endif %}
 
+    <div class="row mb-4">
+        {% if min_price %}
+            <div class="col-12 col-sm-6">
+                <div class="card">
+                    <h5 class="card-header">Минимальная цена</h5>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ min_price|stringformat:".2f" }} руб.</h5>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        {% if avg_price %}
+            <div class="col-12 col-sm-6">
+                <div class="card">
+                    <h5 class="card-header">Средняя цена</h5>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ avg_price|stringformat:".2f" }} руб.</h5>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <h2>Предложения от поставщиков</h2>
+    <div class="row">
+        {% for offer in offers %}
+            <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-3">
+                <div class="card">
+                    {% if offer.image_url %}
+                        <img src="{{ offer.image_url }}" class="card-img-top">
+                    {% else %}
+                        <img src="{% static 'img/placeholder.jpg' %}" class="card-img-top">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ offer.name }}</h5>
+                        <p class="card-text">{{ offer.provider.name }}</p>
+                        <p class="card-text">Обновлено {{ offer.last_updated|date }}</p>
+                        <p class="card-text">{{ offer.last_offer_price.price_with_vat }} руб/{{ offer.measure_unit }}</p>
+                        <a href="{{ offer.get_absolute_url }}" class="btn btn-outline-primary">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {% include "partial/pagination.html" with page_obj=offers %}
 {% endblock %}

@@ -2,6 +2,7 @@ import hashlib
 import os
 
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 
 
@@ -64,6 +65,9 @@ class Offer(models.Model):
             .filter(offer=self, status=OfferPrice.Status.PUBLISHED)\
             .order_by("extraction_date")\
             .last()
+
+    def get_absolute_url(self):
+        return reverse("parsers:offer", kwargs={"pk": self.pk})
 
 
 class OfferPrice(models.Model):

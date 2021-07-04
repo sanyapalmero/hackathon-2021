@@ -26,12 +26,20 @@ class ProductView(generic.DetailView):
             .annotate_price_with_vat()\
             .filter(price_with_vat__isnull=False)\
             .order_by("price_with_vat")
-        offers = Paginator(offers, self.offers_per_page).get_page(self.request.GET.get('page'))
-        context["offers"] = offers
+        offers_page = Paginator(offers, self.offers_per_page).get_page(self.request.GET.get('page'))
+        context["offers"] = offers_page
+
+        aggr = offers.aggregate(
+            min_price=models.Min("price_with_vat"),
+            avg_price=models.Avg("price_with_vat"),
+        )
+        context["min_price"] = aggr["min_price"]
+        context["avg_price"] = aggr["avg_price"]
 
         return context
 
 
+@method_decorator(login_required, name="dispatch")
 class SearchOfferView(generic.ListView):
     template_name_suffix = '-search'
     model = Offer
@@ -54,3 +62,9 @@ class SearchOfferView(generic.ListView):
         qs = qs.filter(query)
 
         return qs
+
+
+@method_decorator(login_required, name="dispatch")
+class OfferView(generic.DetailView):
+    model = Offer
+    template_name = "parsers/offer.html"
