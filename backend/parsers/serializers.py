@@ -16,6 +16,7 @@ class OfferSerializer(serializers.ModelSerializer):
     class Meta:
         model = Offer
         fields = (
+            'id',
             'resource_code',
             'name',
             'measure_unit',
@@ -33,6 +34,7 @@ class OfferSerializerWithoutPrice(OfferSerializer):
     class Meta:
         model = Offer
         fields = (
+            'id',
             'resource_code',
             'name',
             'measure_unit',
@@ -50,6 +52,7 @@ class OfferDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Offer
         fields = (
+            'id',
             'resource_code',
             'name',
             'measure_unit',
@@ -77,8 +80,6 @@ class ProductListSerializer(serializers.ModelSerializer):
 class ProductDetailSerializer(serializers.ModelSerializer):
     avg_offer_price = serializers.SerializerMethodField()
     min_offer_price = serializers.SerializerMethodField()
-    offers = OfferSerializerWithoutPrice(many=True)
-    prices = serializers.SerializerMethodField()
 
     def get_avg_offer_price(self, instance):
         return Product.objects.filter(
@@ -96,12 +97,9 @@ class ProductDetailSerializer(serializers.ModelSerializer):
             avg_price=models.Min('offers__prices__price_with_vat')
         ).values_list('avg_price', flat=True)[0]
 
-    def get_prices(self, instance):
-        return OfferPriceSerializer(OfferPrice.objects.filter(offer__product_id=instance.id), many=True).data
-
     class Meta:
         model = Product
-        fields = ('id', 'name', 'measure_unit', 'resource_code', 'avg_offer_price', 'min_offer_price', 'offers', 'prices')
+        fields = ('id', 'name', 'measure_unit', 'resource_code', 'avg_offer_price', 'min_offer_price')
 
 
 class ProviderSerializer(serializers.ModelSerializer):
