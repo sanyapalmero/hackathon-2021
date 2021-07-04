@@ -2,7 +2,6 @@ import hashlib
 import os
 
 from django.db import models
-from django.contrib.postgres.fields import ArrayField
 from django.utils import timezone
 
 
@@ -27,6 +26,16 @@ class Provider(models.Model):
     warehouse_location = models.CharField(max_length=255, verbose_name="Населенный пункт склада")
 
 
+class OfferQuerySet(models.QuerySet):
+    def annotate_price_with_vat(self):
+        return self.annotate(price_with_vat=models.Subquery(
+            OfferPrice.objects
+            .filter(offer_id=models.OuterRef("pk"), status=OfferPrice.Status.PUBLISHED)
+            .order_by("-extraction_date")
+            .values("price_with_vat")[:1]
+        ))
+
+
 class Offer(models.Model):
     """
     Модель: Предложение
@@ -46,6 +55,8 @@ class Offer(models.Model):
     image_url = models.URLField(null=True, blank=True, verbose_name="Ссылка на картинку")
     status = models.IntegerField(choices=Status.choices, db_index=True, verbose_name="Статус")
     product = models.ForeignKey(Product, null=True, blank=True, on_delete=models.SET_NULL, verbose_name="Товар")
+
+    objects = OfferQuerySet.as_manager()
 
     @property
     def last_offer_price(self):
