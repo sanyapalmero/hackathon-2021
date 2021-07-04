@@ -1,6 +1,7 @@
 // Styles
 import '../scss/main.scss'
 
+import 'bootstrap/dist/js/bootstrap.bundle';
 import DemoFill from './demo';
 import ChartComponent from "./components/Chart";
 
