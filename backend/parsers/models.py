@@ -31,6 +31,9 @@ class Provider(models.Model):
     kpp = models.CharField(max_length=255, verbose_name="КПП")
     warehouse_location = models.CharField(max_length=255, verbose_name="Населенный пункт склада")
 
+    def __str__(self):
+        return self.name
+
 
 class OfferQuerySet(models.QuerySet):
     def annotate_price_with_vat(self):

@@ -5,6 +5,7 @@ from django.utils.decorators import method_decorator
 from django.views import generic
 from users.decorators import login_required
 
+from .forms import OfferFilterForm
 from .models import Offer, Product
 
 
@@ -55,6 +56,12 @@ class SearchOfferView(generic.ListView):
     template_name_suffix = '-search'
     model = Offer
     paginate_by = 30
+    form_class = OfferFilterForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = self.form_class(self.request.GET)
+        return context
 
     def get_queryset(self):
         qs = super().get_queryset()
@@ -67,11 +74,27 @@ class SearchOfferView(generic.ListView):
             Q(product__name__icontains=search_offers_str)
         )
 
-        if not search_offers_str:
-            return qs
+        if search_offers_str:
+            qs = qs.filter(query)
 
-        qs = qs.filter(query)
+        form = self.form_class(self.request.GET)
 
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            if name:
+                qs = qs.filter(name__icontains=name)
+
+            provider = form.cleaned_data['provider']
+            if provider:
+                qs = qs.filter(provider=provider)
+
+            date_start = form.cleaned_data['date_start']
+            if date_start:
+                qs = qs.filter(last_updated__gte=date_start)
+
+            date_end = form.cleaned_data['date_end']
+            if date_end:
+                qs = qs.filter(last_updated__lte=date_end)
         return qs
 
 
