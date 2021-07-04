@@ -79,4 +79,18 @@
             </table>
         </div>
     </div>
+
+    <div>
+        <div class="col-12 col-sm-6">
+            <div class="card">
+                <h5 class="card-header">График изменения цены</h5>
+                <div class="card-body">
+                    <div class="chart-component"
+                         data-dates="{% for _, j in product_price_range %}{{ j }}{% if not forloop.last %}, {% endif %}{% endfor %}"
+                         data-prices="{% for i, _ in product_price_range %}{{ i }}{% if not forloop.last %}, {% endif %}{% endfor %}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
