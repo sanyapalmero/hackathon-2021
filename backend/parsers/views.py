@@ -101,15 +101,13 @@ class SearchOfferView(generic.ListView):
 
         if form.is_valid():
             excel = form.cleaned_data['excel']
-            print("_____________________________________________")
-            print(excel)
             if excel:
                 return self._get_excel(request=request, qs=self.get_queryset())
 
         return super().get(request)
 
     def get_queryset(self):
-        qs = super().get_queryset()
+        qs = self.model.objects.filter(status=self.model.Status.PUBLISHED)
 
         search_offers_str = self.request.GET.get('search_offers_str')
 
