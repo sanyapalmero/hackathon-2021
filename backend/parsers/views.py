@@ -52,6 +52,21 @@ class ProductView(generic.DetailView):
         context["min_price"] = aggr["min_price"]
         context["avg_price"] = aggr["avg_price"]
 
+        now = timezone.now()
+
+        prices_graph = []
+        for step in range(12, 1, -1):
+            gte_date = (now-timezone.timedelta(days=7*step)).date()
+            lte_date = (now-timezone.timedelta(days=7*(step-1))).date()
+
+            ofp_qs = OfferPrice.objects.filter(offer__in=offers,
+                                               extraction_date__date__gte=gte_date,
+                                               extraction_date__date__lte=lte_date)
+            aggr = ofp_qs.aggregate(avg_price=models.Avg("price_with_vat"))
+            prices_graph.append((str(aggr['avg_price']), gte_date.isoformat()))
+
+        context['product_price_range'] = prices_graph
+
         return context
 
 
