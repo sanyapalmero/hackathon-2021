@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ProductsService } from "./products.service";
 import { debounceTime, filter, map, share, startWith, switchMap, tap } from "rxjs/operators";
-import { combineLatest, Subject } from "rxjs";
-import { isPresent, tuiReplayedValueChangesFrom } from "@taiga-ui/cdk";
+import { BehaviorSubject, combineLatest, Subject } from "rxjs";
 import { FormControl, FormGroup } from "@angular/forms";
+import { LazyLoadEvent } from "primeng/api";
 
 @Component({
   selector: 'app-products',
@@ -12,10 +12,10 @@ import { FormControl, FormGroup } from "@angular/forms";
 })
 export class ProductsComponent implements OnInit {
 
-  readonly columns = ['name', 'measure_unit', 'resource_code', 'offers_count'];
+  columns = ['name', 'measure_unit', 'resource_code', 'offers_count'];
   searchForm: { [key: string]: FormControl } = this.columns.reduce(
     (acc: { [key: string]: FormControl }, curr) => (
-      acc[curr+'__icontains'] = new FormControl(''), acc)
+      acc[curr + '__icontains'] = new FormControl(''), acc)
     , {}
   );
   searchFormGroup = new FormGroup({
@@ -27,41 +27,28 @@ export class ProductsComponent implements OnInit {
   constructor(private productsService: ProductsService) {
   }
 
-  private readonly size$ = new Subject<number>();
-  private readonly page$ = new Subject<number>();
-  private readonly request$ = combineLatest([
-    this.page$.pipe(startWith(0)),
-    this.size$.pipe(startWith(10)),
-    tuiReplayedValueChangesFrom<{ [key: string]: string }>(this.searchFormGroup)
-  ]).pipe(
-    switchMap(query => this.productsService.getProducts(...query).pipe(
-      startWith(null)
-    )),
+  lazy$ = new BehaviorSubject<LazyLoadEvent>(null);
+
+  private request$ = this.lazy$.pipe(
+    filter(query => !!query),
+    tap(console.log),
+    switchMap(query => this.productsService.getProducts(query)),
+  );
+
+  data$ = this.request$.pipe(
+    map(({results}) => results),
     share(),
   );
-  readonly loading$ = this.request$.pipe(
+
+  loading$ = this.data$.pipe(
     map(value => !value),
   );
-  readonly total$ = this.request$.pipe(
-    filter(isPresent),
+
+  total$ = this.request$.pipe(
     map(({count}) => count),
     startWith(1),
   );
-  readonly data$ = this.request$.pipe(
-    filter(isPresent),
-    map(({results}) => results),
-    map(products => products.filter(isPresent)),
-    startWith([]),
-  );
 
   ngOnInit(): void {
-  }
-
-  onSize(size: number) {
-    this.size$.next(size);
-  }
-
-  onPage(page: number) {
-    this.page$.next(page);
   }
 }

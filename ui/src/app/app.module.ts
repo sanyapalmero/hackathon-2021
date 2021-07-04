@@ -10,6 +10,7 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { CookieService } from "ngx-cookie-service";
 import { LoginComponent } from './login/login/login.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { AvatarModule } from "primeng/avatar";
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { NavbarComponent } from './navbar/navbar.component';
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
+    AvatarModule,
   ],
   providers: [
     AuthService,

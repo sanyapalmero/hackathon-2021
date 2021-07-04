@@ -1,16 +1,11 @@
 <article *ngIf="user$ | async as user">
-  <tui-avatar
-    class="tui-space_right-1"
-    [text]=user?.username
-    [autoColor]="true"
-  ></tui-avatar>
-  <div class="tui-space_right-1"
-  >{{user?.username}}</div>
+  <!--  <tui-avatar-->
+  <!--    class="tui-space_right-1"-->
+  <!--    [text]=user?.username-->
+  <!--    [autoColor]="true"-->
+  <!--  ></tui-avatar>-->
+  <div>{{user?.username}}</div>
   <button
-    tuiButton
-    type="button"
-    appearance="outline"
-    size="s"
     (click)="logout()">
     Выйти
   </button>

@@ -1,22 +1,15 @@
 <article class="auth">
-  <tui-island class="auth_content">
-    <h3 class="tui-island__title tui">
+    <h3 class="">
       Авторизация
     </h3>
     <form [formGroup]="loginForm">
-      <tui-input class="b-form" formControlName="username">
+      <input class="b-form" formControlName="username">
         Введите логин
-      </tui-input>
-      <tui-input-password formControlName="password" tuiTextfieldSize="s">
+      <input formControlName="password">
         Введите пароль
-      </tui-input-password>
       <button
-        tuiButton
-        type="button"
-        appearance="primary"
         (click)="login()">
         Войти
       </button>
     </form>
-  </tui-island>
 </article>

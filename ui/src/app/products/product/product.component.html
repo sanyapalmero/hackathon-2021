@@ -1,3 +1,28 @@
 <div *ngIf="data$ | async as data">
-
+    <h4>{{data.name}}</h4>
+  <p-divider></p-divider>
+  <p>Средняя цена: {{data.avg_offer_price | currency:'RUB':'symbol'}}</p>
+  <p-divider></p-divider>
+  <p>Единица измерения: {{data.measure_unit}}</p>
+  <p-divider></p-divider>
+  <p>Минимальная цена: {{data.min_offer_price | currency:'RUB':'symbol'}}</p>
+  <p-divider></p-divider>
+  <p>Код: {{data.resource_code}}</p>
 </div>
+<p-dataView [value]="offers$ | async">
+  <ng-template pTemplate="header">Список предложений</ng-template>
+    <ng-template let-offer pTemplate="listItem">
+      <div class="p-col-12">
+        <div class="product-list-item">
+          <div class="product-list-detail">
+            <div class="product-name">{{offer.name }}</div>
+            <div class="product-description">{{offer.status}}</div>
+            <div class="product-description"><a href="offer.page_url">{{offer.page_url}}</a></div>
+          </div>
+          <div class="product-list-action">
+            <span class="product-price">{{'100' | currency:'RUB':'symbol'}}</span>
+          </div>
+        </div>
+      </div>
+  </ng-template>
+</p-dataView>

@@ -1,9 +1,6 @@
 <nav>
   <div *ngFor="let item of list">
     <a
-      tuiLink
-      icon="tuiIconToggleOff"
-      iconAlign="left"
       [routerLink]="item.url">
       {{item.title}}
     </a>
