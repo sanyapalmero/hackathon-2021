@@ -64,11 +64,11 @@ class OfferDetailSerializer(serializers.ModelSerializer):
 
 
 class ProductListSerializer(serializers.ModelSerializer):
-    offers = OfferSerializer(many=True)
+    offers = OfferSerializer(many=True, source='published_offers')
 
     class Meta:
         model = Product
-        fields = ('id', 'name', 'keywords', 'offers')
+        fields = ('id', 'name', 'measure_unit', 'resource_code', 'offers')
 
 
 class ProductDetailSerializer(serializers.ModelSerializer):
