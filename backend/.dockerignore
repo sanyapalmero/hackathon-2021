@@ -13,3 +13,4 @@ static/dist
 fabfile.py
 .vscode
 .idea
+pgdata

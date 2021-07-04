@@ -1,7 +1,9 @@
 version: '3'
 services:
   frontend:
-    image: docker.pkg.github.com/sanyapalmero/hackathon-2021/hackathon-2021-frontend:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
     volumes:
       - static:/app/static:ro
       - ./media:/app/media:ro
@@ -11,7 +13,9 @@ services:
   backend:
     depends_on:
       - db
-    image: docker.pkg.github.com/sanyapalmero/hackathon-2021/hackathon-2021-backend:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
     environment:
       - POSTGRES_PASSWORD=h2021
       - POSTGRES_USER=h2021
