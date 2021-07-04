@@ -63,7 +63,8 @@ class ProductView(generic.DetailView):
                                                extraction_date__date__gte=gte_date,
                                                extraction_date__date__lte=lte_date)
             aggr = ofp_qs.aggregate(avg_price=models.Avg("price_with_vat"))
-            prices_graph.append((str(aggr['avg_price']), gte_date.isoformat()))
+            if aggr['avg_price']:
+                prices_graph.append((str(aggr['avg_price']), gte_date.isoformat()))
 
         context['product_price_range'] = prices_graph
 
@@ -161,7 +162,8 @@ class OfferView(generic.DetailView):
                 extraction_date__date__gte=gte_date,
                 extraction_date__date__lte=lte_date)
             aggr = ofp_qs.aggregate(avg_price=models.Avg("price_with_vat"))
-            prices_graph.append((str(aggr['avg_price']), gte_date.isoformat()))
+            if aggr['avg_price']:
+                prices_graph.append((str(aggr['avg_price']), gte_date.isoformat()))
 
         context['product_price_range'] = prices_graph
         return context

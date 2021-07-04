@@ -12,12 +12,13 @@
         </p>
     {% endif %}
 
-    {% if offer.image_url %}
-        <img src="{{ offer.image_url }}" style="max-width: 300px; height: auto;">
-    {% endif %}
-
     <div class="row">
-        <div class="col-12 col-sm-6">
+        <div class="col-12 col-sm-6 mb-3">
+            {% if offer.image_url %}
+                <img src="{{ offer.image_url }}" style="max-width: 100%; height: auto;">
+            {% endif %}
+        </div>
+        <div class="col-12 col-sm-6 mb-3">
             <h2>Цена</h2>
             <table class="table table-bordered">
                 <tr>
@@ -34,7 +35,17 @@
                 </tr>
             </table>
         </div>
-        <div class="col-12 col-sm-6">
+    </div>
+    {% if product_price_range %}
+        <h2>График изменения цены</h2>
+        <div class="chart-component mb-3"
+            data-dates="{% for _, j in product_price_range %}{{ j }}{% if not forloop.last %}, {% endif %}{% endfor %}"
+            data-prices="{% for i, _ in product_price_range %}{{ i }}{% if not forloop.last %}, {% endif %}{% endfor %}">
+            <canvas id="canvas"></canvas>
+        </div>
+    {% endif %}
+    <div class="row">
+        <div class="col-12 col-sm-6 mb-3">
             <h2>Поставщик</h2>
             <table class="table table-bordered">
                 <tr>
@@ -55,7 +66,7 @@
                 </tr>
             </table>
         </div>
-        <div class="col-12 col-sm-6">
+        <div class="col-12 col-sm-6 mb-3">
             <h2>Источник</h2>
             <table class="table table-bordered">
                 <tr>
@@ -77,20 +88,6 @@
                     </tr>
                 {% endif %}
             </table>
-        </div>
-    </div>
-
-    <div>
-        <div class="col-12 col-sm-6">
-            <div class="card">
-                <h5 class="card-header">График изменения цены</h5>
-                <div class="card-body">
-                    <div class="chart-component"
-                         data-dates="{% for _, j in product_price_range %}{{ j }}{% if not forloop.last %}, {% endif %}{% endfor %}"
-                         data-prices="{% for i, _ in product_price_range %}{{ i }}{% if not forloop.last %}, {% endif %}{% endfor %}">
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 {% endblock %}

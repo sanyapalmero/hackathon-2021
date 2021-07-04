@@ -1,4 +1,4 @@
-import { Chart } from 'chart.js'
+import Chart from 'chart.js/auto';
 
 export default class ChartComponent {
     baseElement: HTMLElement
@@ -6,43 +6,38 @@ export default class ChartComponent {
     constructor(baseElement: HTMLElement) {
         this.baseElement = baseElement
 
-        var chartDates = baseElement.getAttribute('data-dates')
-        if (!chartDates) {
+        let rowChartDates = baseElement.getAttribute('data-dates');
+        if (!rowChartDates) {
             throw new Error("Chart data must me installed")
         }
-        var chartValues = baseElement.getAttribute('data-prices')
-        if (!chartValues) {
+        let chartDates = rowChartDates.split(",");
+
+        let rowChartValues = baseElement.getAttribute('data-prices');
+        if (!rowChartValues) {
             throw new Error("Chart data must me installed")
         }
-        this.renderChart(baseElement.querySelector('#canvas')!, [], [])
+        let chartValues = rowChartValues.split(",").map((value) => Number(value));
+
+        this.renderChart(baseElement.querySelector('#canvas')!, chartDates, chartValues)
     }
 
-    renderChart(element: HTMLCanvasElement, labels: Array<Date>, values: Array<Number>) {
+    renderChart(element: HTMLCanvasElement, labels: Array<string>, values: Array<Number>) {
         new Chart(element, {
-            type: 'bar',
+            type: 'line',
             data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                labels: labels,
                 datasets: [{
-                    label: '# of Votes',
-                    data: [12, 19, 3, 5, 2, 3],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
+                    label: "Цена",
+                    data: values,
+                    backgroundColor: 'rgba(255, 99, 132, 1)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    pointRadius: 4,
+                    pointHoverRadius: 8
                 }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
             }
         })
     }
