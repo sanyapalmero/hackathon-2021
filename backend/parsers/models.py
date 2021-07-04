@@ -15,6 +15,11 @@ class Product(models.Model):
     measure_unit = models.CharField(null=True, blank=True, max_length=255, verbose_name="Единица измерения")
     resource_code = models.CharField(null=True, blank=True, max_length=255, verbose_name="Код строительного ресурса")
 
+    @property
+    def image_url(self):
+        offer = self.offer_set.filter(image_url__isnull=False).first()
+        return offer.image_url if offer else None
+
 
 class Provider(models.Model):
     """

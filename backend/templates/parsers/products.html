@@ -1,5 +1,24 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+<h1>Свежие обновления</h1>
+<div class="row pt-3">
+    {% for product in object_list %}
+        <div class="col-md-3">
+            <div class="card border-primary mb-3" style="max-width: 20rem;">
+                <div class="card-header">{{ product.name }}</div>
+                {% if product.image_url %}
+                    <img src="{{ product.image_url }}" class="card-img-top">
+                {% endif %}
+                <div class="card-body">
+                    <p class="card-text">{{ product.resource_code }}</p>
+                    <a href="{% url 'parsers:product' product.id %}" class="btn btn-primary">Посмотреть</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    {% if is_paginated %}
+        {% include 'partial/pagination.html' with page_obj=page_obj %}
+    {% endif %}
+</div>
 {% endblock %}

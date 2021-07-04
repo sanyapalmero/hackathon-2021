@@ -7,8 +7,18 @@ from users.decorators import login_required
 from .models import Offer, Product
 
 
-class ProductsView(generic.TemplateView):
+class ProductsView(generic.ListView):
     template_name = 'parsers/products.html'
+    model = Product
+    paginate_by = 20
+
+    def get_queryset(self):
+        products_qs = super(ProductsView, self).get_queryset()
+        products_qs = products_qs.annotate(
+            last_updated=models.Min("offer__last_updated", filter=models.Q(offer__status=Offer.Status.PUBLISHED)),
+        ).exclude(last_updated__isnull=True).order_by("last_updated")
+
+        return products_qs
 
 
 @method_decorator(login_required, name="dispatch")
