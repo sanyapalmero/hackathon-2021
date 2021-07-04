@@ -3,12 +3,13 @@ from django.db import models
 from django.db.models import Q
 from django.http import HttpResponse
 from django.utils import timezone
+from django.shortcuts import get_object_or_404, redirect
 from django.utils.decorators import method_decorator
 from django.views import generic
-from users.decorators import login_required
+from users.decorators import admin_required, login_required
 
 from .forms import OfferFilterForm
-from .models import Offer, Product
+from .models import Offer, OfferPrice, Product
 from .services.excel_report import OfferExcelReport
 
 
@@ -130,3 +131,49 @@ class SearchOfferView(generic.ListView):
 class OfferView(generic.DetailView):
     model = Offer
     template_name = "parsers/offer.html"
+
+
+@method_decorator(admin_required, name="dispatch")
+class ManageUpdatesView(generic.ListView):
+    model = Offer
+    template_name = "parsers/manage-updates.html"
+    paginate_by = 20
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+
+        updated_qs = qs.filter(status=Offer.Status.PUBLISHED).filter(offerprice__status=OfferPrice.Status.WAITING)
+        new_qs = qs.filter(status=Offer.Status.WAITING)
+
+        return (updated_qs | new_qs).distinct()
+
+
+@method_decorator(admin_required, name="dispatch")
+class AcceptUpdateView(generic.View):
+    def post(self, request, pk):
+        offer = get_object_or_404(Offer, pk=pk)
+        offer.status = Offer.Status.PUBLISHED
+        offer.save()
+
+        last_waiting_offer_price = offer.last_waiting_offer_price
+        if last_waiting_offer_price:
+            last_waiting_offer_price.status = OfferPrice.Status.PUBLISHED
+            last_waiting_offer_price.save()
+
+        return redirect("parsers:manage-updates")
+
+
+@method_decorator(admin_required, name="dispatch")
+class DeclineUpdateView(generic.View):
+    def post(self, request, pk):
+        offer = get_object_or_404(Offer, pk=pk)
+        if offer.is_waiting:
+            offer.status = Offer.Status.UNPUBLISHED
+            offer.save()
+
+        last_waiting_offer_price = offer.last_waiting_offer_price
+        if last_waiting_offer_price:
+            last_waiting_offer_price.status = OfferPrice.Status.UNPUBLISHED
+            last_waiting_offer_price.save()
+
+        return redirect("parsers:manage-updates")
