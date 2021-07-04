@@ -1,4 +1,4 @@
-<div class="form-group {% if field_name.errors %}has-danger{% endif %}">
+<div class="{% if field_name.errors %}has-danger{% endif %}">
     {{ field_name.label_tag }}
     <select
         class="form-control {% if field_name.errors %}is-invalid{% endif %}"
