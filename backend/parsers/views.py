@@ -1,12 +1,16 @@
 from django.core.paginator import Paginator
 from django.db import models
 from django.db.models import Q
+from django.http import HttpResponse
+from django.utils import timezone
 from django.shortcuts import get_object_or_404, redirect
 from django.utils.decorators import method_decorator
 from django.views import generic
 from users.decorators import admin_required, login_required
 
+from .forms import OfferFilterForm
 from .models import Offer, OfferPrice, Product
+from .services.excel_report import OfferExcelReport
 
 
 class ProductsView(generic.ListView):
@@ -56,6 +60,37 @@ class SearchOfferView(generic.ListView):
     template_name_suffix = '-search'
     model = Offer
     paginate_by = 30
+    form_class = OfferFilterForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = self.form_class(self.request.GET)
+        return context
+
+    def _get_excel(self, request, qs):
+        excel_file = OfferExcelReport(
+            sheet_name='Отчет на {}'.format(timezone.now().strftime('%d.%m.%Y'))
+        )
+        excel_file.generate(qs=qs)
+
+        response = HttpResponse(
+            excel_file.for_http_response(),
+            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
+        response['Content-Disposition'] = 'attachment; filename=%s' % excel_file.filename
+        return response
+
+    def get(self, request):
+        form = self.form_class(request.GET)
+
+        if form.is_valid():
+            excel = form.cleaned_data['excel']
+            print("_____________________________________________")
+            print(excel)
+            if excel:
+                return self._get_excel(request=request, qs=self.get_queryset())
+
+        return super().get(request)
 
     def get_queryset(self):
         qs = super().get_queryset()
@@ -68,11 +103,27 @@ class SearchOfferView(generic.ListView):
             Q(product__name__icontains=search_offers_str)
         )
 
-        if not search_offers_str:
-            return qs
+        if search_offers_str:
+            qs = qs.filter(query)
 
-        qs = qs.filter(query)
+        form = self.form_class(self.request.GET)
 
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            if name:
+                qs = qs.filter(name__icontains=name)
+
+            provider = form.cleaned_data['provider']
+            if provider:
+                qs = qs.filter(provider=provider)
+
+            date_start = form.cleaned_data['date_start']
+            if date_start:
+                qs = qs.filter(last_updated__gte=date_start)
+
+            date_end = form.cleaned_data['date_end']
+            if date_end:
+                qs = qs.filter(last_updated__lte=date_end)
         return qs
 
 
