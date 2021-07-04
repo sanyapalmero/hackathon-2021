@@ -14,8 +14,14 @@ router.register(r'offer_prices', parsers.views.OfferPriceViewSet)
 
 urlpatterns = [
     path('api/', include(router.urls)),
+    # path(
+    #     'api/excel/',
+    #     parsers.views.ExcelOffersApiView.as_view(),
+    #     name='excel'
+    # ),
     path('admin/', admin.site.urls),
     path("auth/", include("users.urls")),
+
 ]
 
 if settings.DEBUG:

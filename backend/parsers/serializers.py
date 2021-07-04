@@ -95,6 +95,12 @@ class OfferDetailSerializer(serializers.ModelSerializer):
         )
 
 
+class OfferExcelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Offer
+        fields = ()
+
+
 class OfferApproveSerializer(serializers.ModelSerializer):
     class Meta:
         model = Offer

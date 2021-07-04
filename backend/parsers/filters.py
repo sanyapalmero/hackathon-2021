@@ -1,7 +1,7 @@
-import django_filters
 from django_filters.rest_framework import FilterSet
 
 from . import models
+
 
 class ProductFilterSet(FilterSet):
     class Meta:
@@ -18,7 +18,10 @@ class OfferFilterSet(FilterSet):
         model = models.Offer
         fields = {
             'product__id': ['exact'],
-            'status': ['exact']
+            'status': ['exact'],
+            'name': ['exact', 'icontains'],
+            'last_updated': ['exact', 'lte', 'gte'],
+            'provider': ['exact', 'in']
         }
 
 
