@@ -16,7 +16,7 @@ class LoginView(generic.View):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect("users:login")
+            return redirect("/")
         else:
             return render(request, self.template_name, {"form": form})
 
