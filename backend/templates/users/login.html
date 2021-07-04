@@ -9,7 +9,7 @@
             {% for error in form.non_field_errors %}
                 <div class="invalid-feedback">{{ error }}</div>
             {% endfor %}
-            <div class="form-group {% if form.email.errors %}has-danger{% endif %}">
+            <div class="mb-3 form-group {% if form.email.errors %}has-danger{% endif %}">
                 <input 
                     class="form-control {% if form.email.errors %}is-invalid{% endif %}" 
                     type="email" 
@@ -22,7 +22,7 @@
                     <div class="invalid-feedback">{{ error }}</div>
                 {% endfor %}
             </div>
-            <div class="form-group {% if form.password.errors %}has-danger{% endif %}">
+            <div class="mb-3 form-group {% if form.password.errors %}has-danger{% endif %}">
                 <input 
                     class="form-control {% if form.password.errors %}is-invalid{% endif %}" 
                     type="password" 
