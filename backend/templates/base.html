@@ -38,13 +38,22 @@
                     {% block content %}{% endblock %}
                 </div>
                 <div class="col-md-4 col-lg-3 pt-3">
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="Поиск...">
-                        <button class="btn btn-outline-primary" type="button" id="button-addon2">Найти</button>
-                    </div>
+                    <form action="{% url 'parsers:search-offers' %}">
+                        <div class="input-group mb-3">
+                            <input
+                                type="text"
+                                id="id_search_offers_str"
+                                name="search_offers_str"
+                                class="form-control"
+                                placeholder="Поиск..."
+                                value="{{ request.GET.search_offers_str|default:'' }}"
+                            >
+                            <button class="btn btn-outline-primary" type="submit" id="button-addon2">Найти</button>
+                        </div>
+                    </form>
                     <div class="list-group mb-3">
                         <a href="{% url 'parsers:products' %}" class="list-group-item list-group-item-action">Свежие обновления</a>
-                        <a href="#" class="list-group-item list-group-item-action">Все ресурсы</a>
+                        <a href="{% url 'parsers:search-offers' %}" class="list-group-item list-group-item-action">Все ресурсы</a>
                         {% if request.user.is_admin %}
                             <a href="#" class="list-group-item list-group-item-action">Управление обновлениями</a>
                         {% endif %}

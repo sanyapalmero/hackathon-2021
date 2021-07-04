@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Поиск{% endblock %}
+
+{% block content %}
+    {% if request.GET.search_offers_str  %}
+        <h1>Поисковый запрос: {{ request.GET.search_offers_str }}</h1>
+    {% else %}
+        <h1>Все ресурсы</h1>
+    {% endif %}
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">КСР</th>
+                <th scope="col">Наименование</th>
+                <th scope="col">Поставщик</th>
+                <th scope="col">Статус</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for offer in object_list %}
+                <tr>
+                    <th scope="row">{{ offer.pk }}</th>
+                    <td>
+                        {% if offer.resource_code %}
+                            {{ offer.resource_code }}
+                        {% else %}
+                            {{ offer.product.resource_code }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'parsers:offer' pk=offer.pk %}">{{ offer.name }}</a>
+                    </td>
+                    <td>{{ offer.provider.name }}</td>
+                    <td>{{ offer.get_status_display }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+
+      {% if is_paginated %}
+                {% include 'partial/pagination.html' %}
+    {% endif %}
+{% endblock %}
