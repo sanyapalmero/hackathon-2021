@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from datetime import datetime
 from decimal import Decimal
+from typing import Optional
 
 
 @dataclass
@@ -13,3 +14,4 @@ class RawOffer:
     extraction_date: datetime
     page_url: str
     image_url: str
+    screenshot_pdf_url: Optional[str]
