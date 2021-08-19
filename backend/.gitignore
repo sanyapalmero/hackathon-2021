@@ -282,4 +282,6 @@ webpack-stats.json
 .history
 .ionide
 
+docker/screenshots.tar.gz
+
 # End of https://www.toptal.com/developers/gitignore/api/django,node,visualstudiocode

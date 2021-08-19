@@ -14,3 +14,4 @@ fabfile.py
 .vscode
 .idea
 pgdata
+docker/screenshots.tar.gz
